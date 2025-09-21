@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humor Genome Meme Lab</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C7RP3D0GMY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-C7RP3D0GMY');
+  </script>
+
+  <link rel="icon" href="favicon.ico?v=2" type="image/x-icon" />
+
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: rgba(245, 245, 245, 0.95);
+      color: #1a1a1a;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #fefefd 0%, #f1f5fb 55%, #dfe7f3 100%);
+    }
+
+    .app {
+      width: min(1020px, 94vw);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 18px 42px rgba(34, 68, 114, 0.16);
+      border-radius: 22px;
+      padding: clamp(24px, 3vw, 40px);
+      display: grid;
+      gap: clamp(22px, 3vw, 32px);
+      grid-template-columns: repeat(2, minmax(320px, 1fr));
+    }
+
+    header {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 6px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 2.2vw, 2.4rem);
+      color: #1d2f56;
+      letter-spacing: 0.6px;
+    }
+
+    header p {
+      margin: 0;
+      max-width: 58ch;
+      color: rgba(33, 58, 107, 0.82);
+      line-height: 1.45;
+      font-size: clamp(0.9rem, 1.1vw, 1rem);
+    }
+
+    .controls {
+      display: grid;
+      gap: clamp(16px, 2.5vw, 26px);
+      align-content: start;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-weight: 600;
+      color: #2f3f63;
+      font-size: 1rem;
+    }
+
+    select,
+    button {
+      border-radius: 10px;
+      border: 1px solid rgba(86, 106, 149, 0.22);
+      padding: 11px 14px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      background: rgba(255, 255, 255, 0.9);
+      color: #213a6b;
+    }
+
+    option {
+      color: #213a6b;
+      background: #ffffff;
+    }
+
+    select:hover,
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    select:focus,
+    button:focus {
+      outline: none;
+      border-color: #4a6df0;
+      box-shadow: 0 0 0 3px rgba(74, 109, 240, 0.18);
+    }
+
+    button.is-pressed {
+      transform: translateY(1px);
+      box-shadow: inset 0 0 0 2px rgba(33, 58, 107, 0.16);
+      filter: brightness(0.95);
+    }
+
+    button.primary {
+      cursor: pointer;
+      background: linear-gradient(135deg, #4f7efa, #5bd6ff);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+    }
+
+    button.secondary {
+      cursor: pointer;
+      background: #f1f4fb;
+      color: #2f3f63;
+      border: 1px solid rgba(86, 106, 149, 0.24);
+    }
+
+    button.ghost {
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid rgba(79, 126, 250, 0.28);
+      color: #36509c;
+    }
+
+    .selector-note {
+      font-weight: 400;
+      font-size: 0.85rem;
+      color: #5a6a92;
+      line-height: 1.4;
+    }
+
+    .genome-summary {
+      border-radius: 14px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(79, 126, 250, 0.2);
+      display: grid;
+      gap: 4px;
+      box-shadow: 0 10px 24px rgba(27, 60, 122, 0.08);
+    }
+
+    .genome-headline {
+      font-weight: 700;
+      color: #213a6b;
+      letter-spacing: 0.5px;
+    }
+
+    .genome-detail {
+      font-size: 0.9rem;
+      color: #46527a;
+    }
+
+    .inline-actions {
+      display: flex;
+      gap: clamp(12px, 2vw, 20px);
+      flex-wrap: wrap;
+      grid-column: 1 / -1;
+      align-items: stretch;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-radius: 18px;
+      background: linear-gradient(125deg, rgba(79, 126, 250, 0.14), rgba(91, 214, 255, 0.16));
+      border: 1px solid rgba(79, 126, 250, 0.2);
+      box-shadow: 0 12px 28px rgba(27, 60, 122, 0.08);
+    }
+
+    .inline-actions button {
+      align-self: center;
+      padding-inline: clamp(16px, 4vw, 26px);
+      flex: 0 0 auto;
+    }
+
+    .inline-actions .genome-summary {
+      flex: 1 1 280px;
+      min-width: 260px;
+      max-width: 520px;
+      margin: 0;
+    }
+
+    .canvas-grid {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: clamp(18px, 2.6vw, 26px);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .meme-card {
+      background: rgba(248, 250, 255, 0.82);
+      border: 1px solid rgba(79, 126, 250, 0.18);
+      border-radius: 18px;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      box-shadow: 0 12px 28px rgba(27, 60, 122, 0.12);
+    }
+
+    .meme-card header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      color: #213a6b;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(79, 126, 250, 0.14);
+      color: #2f3f63;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    canvas {
+      width: 100%;
+      border-radius: 16px;
+      background: #101321;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+    }
+
+    .caption-readout {
+      display: grid;
+      gap: 6px;
+      font-size: 0.92rem;
+      color: #36456d;
+      line-height: 1.35;
+    }
+
+    .caption-readout span {
+      background: rgba(255, 255, 255, 0.72);
+      border-radius: 8px;
+      padding: 8px 10px;
+      border: 1px solid rgba(86, 106, 149, 0.12);
+    }
+
+    .vote-btn {
+      align-self: end;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .feedback-panel {
+      background: rgba(244, 247, 255, 0.82);
+      border-radius: 16px;
+      border: 1px solid rgba(79, 126, 250, 0.18);
+      padding: 20px 22px;
+      display: grid;
+      gap: 16px;
+      min-width: 240px;
+      max-width: 320px;
+    }
+
+    .feedback-panel h2 {
+      margin: 0;
+      font-size: 1.08rem;
+      color: #213a6b;
+    }
+
+    #feedbackStatus {
+      margin: 0;
+      font-size: 0.92rem;
+      color: #2f3f63;
+      line-height: 1.4;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(79, 126, 250, 0.12);
+      border: 1px solid rgba(79, 126, 250, 0.18);
+    }
+
+    #feedbackList {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: #36456d;
+      max-height: 200px;
+      overflow-y: auto;
+      list-style: none;
+      counter-reset: feedback;
+    }
+
+    #feedbackList li {
+      position: relative;
+      counter-increment: feedback;
+      padding: 12px 14px 12px 36px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(79, 126, 250, 0.12);
+      display: grid;
+      gap: 4px;
+      line-height: 1.35;
+    }
+
+    #feedbackList li::before {
+      content: counter(feedback) ".";
+      position: absolute;
+      left: 12px;
+      top: 14px;
+      font-weight: 700;
+      color: #213a6b;
+    }
+
+    .feedback-item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      font-weight: 600;
+      color: #213a6b;
+    }
+
+    .feedback-item-meta {
+      font-size: 0.85rem;
+      color: #4a567a;
+    }
+
+    footer {
+      grid-column: 1 / -1;
+      font-size: 0.85rem;
+      color: #6c7899;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .canvas-grid {
+        grid-column: 1;
+      }
+
+      .inline-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .inline-actions button {
+        width: 100%;
+      }
+
+      .inline-actions .genome-summary {
+        flex: 1 1 auto;
+        min-width: auto;
+        max-width: none;
+        padding: 14px 16px;
+        box-shadow: none;
+        background: rgba(255, 255, 255, 0.85);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" role="main">
+    <header>
+      <h1>Humor Genome Meme Lab</h1>
+      <p>Explore the building blocks of a joke. Pick an image vibe, combine it with a humor style, choose the cleverness level, and watch two memes evolve so you can crown the one that hits.</p>
+    </header>
+    
+    <div class="inline-actions">
+      <button type="button" class="secondary" id="shuffleCaptionBtn">Roll new meme pair</button>
+      <div class="genome-summary" aria-live="polite">
+        <div class="genome-headline" id="genomeHeadline"></div>
+        <div class="genome-detail" id="genomeDetail"></div>
+      </div>
+    </div>
+
+    <section class="canvas-grid" aria-label="Meme comparison preview">
+      <article class="meme-card" data-slot="A">
+        <header>
+          <span class="badge">Meme A</span>
+          <button type="button" class="ghost" id="downloadBtnA">Download</button>
+        </header>
+        <canvas id="memeCanvasA" width="600" height="600" aria-label="Meme A preview">Your browser does not support the canvas element.</canvas>
+        <div class="caption-readout" id="captionReadoutA" aria-live="polite"></div>
+        <button type="button" class="primary vote-btn" data-slot="A">Meme A made me laugh</button>
+      </article>
+
+      <article class="meme-card" data-slot="B">
+        <header>
+          <span class="badge">Meme B</span>
+          <button type="button" class="ghost" id="downloadBtnB">Download</button>
+        </header>
+        <canvas id="memeCanvasB" width="600" height="600" aria-label="Meme B preview">Your browser does not support the canvas element.</canvas>
+        <div class="caption-readout" id="captionReadoutB" aria-live="polite"></div>
+        <button type="button" class="primary vote-btn" data-slot="B">Meme B made me laugh</button>
+      </article>
+    </section>
+
+    <section class="controls" aria-label="Humor Genome selectors">
+      <label>
+        Image vibe
+        <select id="vibeSelect"></select>
+        <span class="selector-note" id="vibeNote"></span>
+      </label>
+
+      <label>
+        Humor style
+        <select id="humorSelect"></select>
+        <span class="selector-note" id="humorNote"></span>
+      </label>
+
+      <label>
+        Cleverness
+        <select id="clevernessSelect"></select>
+        <span class="selector-note" id="clevernessNote"></span>
+      </label>
+    </section>
+
+    <section class="feedback-panel" aria-label="Feedback capture">
+      <h2>Feedback Stream</h2>
+      <p id="feedbackStatus">Cast a vote to help train the Humor Genome ranking.</p>
+      <ol id="feedbackList"></ol>
+    </section>
+
+    <footer>
+      <span>Humor Genome is a work-in-progress. Keep experimenting and share which formulas land.</span>
+      <span>Everything runs locally. Nothing is uploaded.</span>
+    </footer>
+  </main>
+
+  <script>
+    const templates = [
+      { id: "successkid", name: "Success Kid", url: "https://i.imgflip.com/1bhk.jpg" },
+      { id: "distracted", name: "Distracted Boyfriend", url: "https://i.imgflip.com/1ur9b0.jpg" },
+      { id: "onedoesnot", name: "One Does Not Simply", url: "https://i.imgflip.com/1bij.jpg" },
+      { id: "aliens", name: "Ancient Aliens", url: "https://i.imgflip.com/3si4.jpg" },
+      { id: "distracted_cat", name: "Woman Yelling at Cat", url: "https://i.imgflip.com/345v97.jpg" },
+      { id: "dicaprio", name: "Leonardo Cheers", url: "https://i.imgflip.com/39t1o.jpg" },
+      { id: "change", name: "Change My Mind", url: "https://i.imgflip.com/24y43o.jpg" },
+      { id: "oprah", name: "Oprah You Get A", url: "https://i.imgflip.com/2fm6x.jpg" },
+      { id: "fry", name: "Futurama Fry", url: "https://i.imgflip.com/1bgw.jpg" },
+      { id: "wonka", name: "Condescending Wonka", url: "https://i.imgflip.com/1bhf.jpg" }
+    ];
+
+    const templateMap = templates.reduce((map, template) => {
+      map[template.id] = template;
+      return map;
+    }, {});
+
+    const imageVibes = [
+      {
+        id: "reaction",
+        label: "Reaction Shot",
+        description: "Express big feelings in one glance.",
+        templateIds: ["successkid", "distracted_cat", "dicaprio"]
+      },
+      {
+        id: "story",
+        label: "Story Panel",
+        description: "Set up a mini narrative for the punchline.",
+        templateIds: ["distracted", "change", "wonka"]
+      },
+      {
+        id: "debate",
+        label: "Debate Energy",
+        description: "Put the joke on a soapbox and let it argue.",
+        templateIds: ["change", "onedoesnot", "oprah"]
+      },
+      {
+        id: "surreal",
+        label: "Surreal Visual",
+        description: "Lean into absurdity and cosmic logic.",
+        templateIds: ["aliens", "fry", "wonka"]
+      },
+      {
+        id: "contrast",
+        label: "Contrast Split",
+        description: "Highlight the before/after energy.",
+        templateIds: ["successkid", "dicaprio", "oprah"]
+      }
+    ];
+
+    const clevernessLevels = [
+      {
+        id: "breezy",
+        label: "Breezy",
+        description: "Instantly accessible. Anyone can get the joke."
+      },
+      {
+        id: "wry",
+        label: "Wry",
+        description: "Rewards context. Perfect for knowing nods."
+      },
+      {
+        id: "galaxy",
+        label: "Galaxy Brain",
+        description: "Layered references for the meme sommeliers."
+      }
+    ];
+
+    const humorStyles = [
+      {
+        id: "lighthearted",
+        label: "Lighthearted",
+        description: "Keep it upbeat and serotonin-rich.",
+        captions: {
+          breezy: [
+            ["Sunshine in my coffee", "Confetti in my inbox"],
+            ["When plans change", "and the vibe gets better"],
+            ["Accidentally wholesome", "on purpose now"],
+            ["Found spare joy", "in the break room playlist"],
+            ["Entire to-do list", "dancing to good vibes"],
+            ["Somehow Monday", "feels like a soft launch"]
+          ],
+          wry: [
+            ["Chasing serotonin like", "it's a limited edition drop"],
+            ["Group chat agrees we're thriving", "via pizza emojis only"],
+            ["Optimism but make it", "strategically scheduled"],
+            ["Memos to self", "written in glitter pen logic"],
+            ["We optimized joy", "with scheduled dance breaks"],
+            ["Forecast: 80% chance", "of spontaneous compliments"]
+          ],
+          galaxy: [
+            ["Quantum of solace", "measured in meme reactions"],
+            ["Entropy can't keep up", "with our good mood algorithm"],
+            ["Emotional ROI", "doubling every laugh cycle"],
+            ["Vibes calibrated", "to resonant frequencies of delight"],
+            ["Running on", "gamma-ray gratitude"],
+            ["Multiverse consensus", "declares today delightful"]
+          ]
+        }
+      },
+      {
+        id: "sarcastic",
+        label: "Sarcastic",
+        description: "Deliver the side-eye, digitally.",
+        captions: {
+          breezy: [
+            ["Wow another brainstorm", "can't contain the excitement"],
+            ["Sure let's pivot again", "reality's on shuffle"],
+            ["My enthusiasm?", "On a coffee break"],
+            ["Peak efficiency is", "me pretending to care"],
+            ["Put it on my calendar", "right between sighs"],
+            ["Another hero emerges", "spoiler: still not me"]
+          ],
+          wry: [
+            ["Deliverables due yesterday", "per the time-travel brief"],
+            ["Synergy requested", "snark delivered"],
+            ["Putting the 'pro' in", "procrastinated sarcasm"],
+            ["Dashboard says productivity", "vibing at irony levels"],
+            ["KPIs: Keep Pretending", "Impressed? maybe."],
+            ["Moved the deadline needle", "straight into satire"]
+          ],
+          galaxy: [
+            ["Irony density detected", "initiating defensive wit"],
+            ["Schrödinger's deadline", "both met and ignored"],
+            ["Sarcasm bandwidth", "exceeds corporate firewall"],
+            ["Sarcastic quark", "collides with office politics"],
+            ["Wit operating", "at ludicrous speed"],
+            ["Calibrated dry humor", "against cosmic microwave background"]
+          ]
+        }
+      },
+      {
+        id: "selfdeprecating",
+        label: "Self-Deprecating",
+        description: "Lovingly roast yourself before anyone else can.",
+        captions: {
+          breezy: [
+            ["Goal: be organized", "Outcome: interpretive dance"],
+            ["Brain cells on strike", "left me in charge"],
+            ["Productivity level", "meme archivist"],
+            ["Efficiency report:", "nap times trending up"],
+            ["Remembered to hydrate", "forgot the rest"],
+            ["Talents include", "misplacing ambition"]
+          ],
+          wry: [
+            ["Confidence fluctuates", "like beta software"],
+            ["Imposter syndrome", "sent a calendar invite"],
+            ["Plan A through F", "currently in group therapy"],
+            ["Performance review:", "graded on a curve I drew"],
+            ["Roadmap now features", "detours by goblins"],
+            ["Confidence patch notes:", "bug fixes pending"]
+          ],
+          galaxy: [
+            ["Chaos vector", "approaching theoretical maximum"],
+            ["Personal brand", "quantum superposition of cringe"],
+            ["Narrative arc", "written by multitasking gremlins"],
+            ["Existential dread", "rendered in pastel gradients"],
+            ["Timeline split", "where I did the thing. Not this one."],
+            ["Narrative DLC", "rewritten by chaotic neutrinos"]
+          ]
+        }
+      },
+      {
+        id: "nerdy",
+        label: "Nerdy",
+        description: "Celebrate the inner engineer, analyst, or lore keeper.",
+        captions: {
+          breezy: [
+            ["Bug count rising", "like my caffeine levels"],
+            ["Deploying optimism", "behind a feature flag"],
+            ["Plot twist:", "documentation actually helpful"],
+            ["Sprint planning includes", "snack table retros"],
+            ["Coffee to commit ratio", "reached stability"],
+            ["Debugging feelings", "with rubber duck wisdom"]
+          ],
+          wry: [
+            ["We refactored the joke", "to O(1) laughter"],
+            ["Version control but", "for mood swings"],
+            ["Graphing happiness", "found an Easter egg"],
+            ["Latency detected", "between idea and execution"],
+            ["Cache hit rate", "for random trivia: 100%"],
+            ["Refactoring jokes", "kept the Easter eggs"]
+          ],
+          galaxy: [
+            ["Entropy of ideas", "stabilized via dad jokes"],
+            ["Neural net predicted", "this punchline in beta"],
+            ["SELECT *", "FROM punchlines WHERE vibe='meta';"],
+            ["Dark matter of backlog", "still pulling weight"],
+            ["AI whispered punchline", "I added regex flair"],
+            ["Deploying humor", "via wormhole integration"]
+          ]
+        }
+      },
+      {
+        id: "wholesome",
+        label: "Wholesome",
+        description: "Good vibes, gentle chaos, lots of heart.",
+        captions: {
+          breezy: [
+            ["Shared snacks", "shared laughs"],
+            ["Kindness queued up", "and always in stock"],
+            ["Today's chaos", "comes with extra hugs"],
+            ["Inbox zero", "replaced with gratitude list"],
+            ["Small wins playlist", "set to loop"],
+            ["Shared silence", "felt like applause"]
+          ],
+          wry: [
+            ["We schedule empathy", "like mission-critical updates"],
+            ["Team morale chart", "mostly rainbow gradients"],
+            ["Unironically thriving", "with goofy energy"],
+            ["We scheduled chaos", "between kindness drills"],
+            ["Mission control reports", "hug levels nominal"],
+            ["Creative brief:", "deliver joy with sprinkles"]
+          ],
+          galaxy: [
+            ["Emotional KPIs", "trending toward stardust"],
+            ["We found serotonin", "in the source code comments"],
+            ["Wholesome energy", "powered by chaotic good"],
+            ["We co-authored starlight", "in the team wiki"],
+            ["Kindness algorithm", "powered by nebulae"],
+            ["Moral support", "broadcast on subspace"]
+          ]
+        }
+      }
+    ];
+
+    const vibeSelect = document.getElementById("vibeSelect");
+    const humorSelect = document.getElementById("humorSelect");
+    const clevernessSelect = document.getElementById("clevernessSelect");
+    const vibeNote = document.getElementById("vibeNote");
+    const humorNote = document.getElementById("humorNote");
+    const clevernessNote = document.getElementById("clevernessNote");
+    const genomeHeadline = document.getElementById("genomeHeadline");
+    const genomeDetail = document.getElementById("genomeDetail");
+    const canvasA = document.getElementById("memeCanvasA");
+    const canvasB = document.getElementById("memeCanvasB");
+    const captionReadoutA = document.getElementById("captionReadoutA");
+    const captionReadoutB = document.getElementById("captionReadoutB");
+    const voteButtons = document.querySelectorAll(".vote-btn");
+    const downloadBtnA = document.getElementById("downloadBtnA");
+    const downloadBtnB = document.getElementById("downloadBtnB");
+    const shuffleButton = document.getElementById("shuffleCaptionBtn");
+    const feedbackStatus = document.getElementById("feedbackStatus");
+    const feedbackList = document.getElementById("feedbackList");
+
+    const ctxA = canvasA.getContext("2d");
+    const ctxB = canvasB.getContext("2d");
+
+    let activeVibe = imageVibes[0];
+    let activeHumor = humorStyles[0];
+    let activeCleverness = clevernessLevels[0];
+    let activeTemplate = templateMap[activeVibe.templateIds[0]] || templates[0];
+    let captionIndexA = 0;
+    let captionIndexB = 1;
+    const currentPairs = { A: ["", ""], B: ["", ""] };
+    const imageCache = new Map();
+    const feedbackLog = [];
+
+    function populateSelectors() {
+      imageVibes.forEach((vibe) => {
+        const option = document.createElement("option");
+        option.value = vibe.id;
+        option.textContent = vibe.label;
+        option.title = vibe.description;
+        vibeSelect.append(option);
+      });
+
+      humorStyles.forEach((style) => {
+        const option = document.createElement("option");
+        option.value = style.id;
+        option.textContent = style.label;
+        option.title = style.description;
+        humorSelect.append(option);
+      });
+
+      clevernessLevels.forEach((level) => {
+        const option = document.createElement("option");
+        option.value = level.id;
+        option.textContent = level.label;
+        option.title = level.description;
+        clevernessSelect.append(option);
+      });
+    }
+
+    function pickTemplateForVibe(vibe) {
+      if (!vibe || !vibe.templateIds.length) {
+        return templates[0];
+      }
+      const ids = vibe.templateIds;
+      const randomId = ids[Math.floor(Math.random() * ids.length)];
+      return templateMap[randomId] || templates[0];
+    }
+
+    function updateSelectorNotes() {
+      vibeNote.textContent = activeVibe?.description || "";
+      humorNote.textContent = activeHumor?.description || "";
+      clevernessNote.textContent = activeCleverness?.description || "";
+    }
+
+    function updateGenomeSummary() {
+      genomeHeadline.textContent = `${activeVibe.label} · ${activeHumor.label} · ${activeCleverness.label}`;
+      const pieces = [activeVibe.description, activeHumor.description, activeCleverness.description].filter(Boolean);
+      genomeDetail.textContent = pieces.join(" — ");
+    }
+
+    function getCaptionSet(humor = activeHumor, cleverness = activeCleverness) {
+      if (!humor || !humor.captions) {
+        return [];
+      }
+      const set = humor.captions[cleverness?.id] || humor.captions.breezy || [];
+      return Array.isArray(set) ? set : [];
+    }
+
+    function ensureDistinctIndices(length, forceNew = false) {
+      if (length === 0) {
+        captionIndexA = 0;
+        captionIndexB = 0;
+        return;
+      }
+
+      if (length === 1) {
+        captionIndexA = 0;
+        captionIndexB = 0;
+        return;
+      }
+
+      if (forceNew || captionIndexA >= length || captionIndexB >= length || captionIndexA === captionIndexB) {
+        captionIndexA = randomIndex(length);
+        do {
+          captionIndexB = randomIndex(length);
+        } while (captionIndexB === captionIndexA);
+      }
+    }
+
+    function setImageVibe(id, randomizeTemplate = true) {
+      const vibe = imageVibes.find((item) => item.id === id);
+      if (!vibe) {
+        return;
+      }
+      activeVibe = vibe;
+      if (randomizeTemplate || !vibe.templateIds.includes(activeTemplate.id)) {
+        activeTemplate = pickTemplateForVibe(vibe);
+      }
+      vibeSelect.value = activeVibe.id;
+      updateSelectorNotes();
+      updateGenomeSummary();
+      loadTemplateImage(activeTemplate.url);
+      applyCaptionPairs(false);
+    }
+
+    function setHumorById(id, forceNew = true) {
+      const found = humorStyles.find((style) => style.id === id);
+      if (!found) {
+        return;
+      }
+      activeHumor = found;
+      humorSelect.value = activeHumor.id;
+      updateSelectorNotes();
+      updateGenomeSummary();
+      applyCaptionPairs(forceNew);
+    }
+
+    function setClevernessById(id, forceNew = true) {
+      const found = clevernessLevels.find((level) => level.id === id);
+      if (!found) {
+        return;
+      }
+      activeCleverness = found;
+      clevernessSelect.value = activeCleverness.id;
+      updateSelectorNotes();
+      updateGenomeSummary();
+      applyCaptionPairs(forceNew);
+    }
+
+    function randomIndex(length) {
+      return Math.floor(Math.random() * Math.max(length, 1));
+    }
+
+    function findLabelById(collection, id) {
+      const found = collection.find((item) => item.id === id);
+      return found?.label || id;
+    }
+
+    function pickRandomDifferent(collection, currentId) {
+      if (!collection.length) {
+        return currentId;
+      }
+      if (collection.length === 1) {
+        return collection[0].id;
+      }
+      let candidate;
+      do {
+        const next = collection[randomIndex(collection.length)];
+        candidate = next?.id || currentId;
+      } while (candidate === currentId);
+      return candidate;
+    }
+
+    function randomizeSelectors() {
+      const newVibeId = pickRandomDifferent(imageVibes, activeVibe.id);
+      setImageVibe(newVibeId, true);
+
+      const newHumorId = pickRandomDifferent(humorStyles, activeHumor.id);
+      setHumorById(newHumorId, true);
+
+      const newClevernessId = pickRandomDifferent(clevernessLevels, activeCleverness.id);
+      setClevernessById(newClevernessId, true);
+    }
+
+    function applyCaptionPairs(forceNew = false) {
+      const set = getCaptionSet();
+      if (!set.length) {
+        currentPairs.A = ["", ""];
+        currentPairs.B = ["", ""];
+        renderMemePair();
+        return;
+      }
+
+      ensureDistinctIndices(set.length, forceNew);
+      currentPairs.A = set[captionIndexA] || ["", ""];
+      currentPairs.B = set[captionIndexB] || set[captionIndexA] || ["", ""];
+      renderMemePair();
+    }
+
+    function loadTemplateImage(url) {
+      if (imageCache.has(url)) {
+        renderMemePair();
+        return;
+      }
+      const image = new Image();
+      image.crossOrigin = "anonymous";
+      image.onload = () => {
+        imageCache.set(url, image);
+        renderMemePair();
+      };
+      image.onerror = () => {
+        const fallback = createFallbackImage();
+        imageCache.set(url, fallback);
+        renderMemePair();
+      };
+      image.src = `${url}${url.includes("?") ? "&" : "?"}cacheBust=${Date.now()}`;
+    }
+
+    function createFallbackImage() {
+      const offscreen = document.createElement("canvas");
+      offscreen.width = 600;
+      offscreen.height = 600;
+      const offCtx = offscreen.getContext("2d");
+      offCtx.fillStyle = "#20233b";
+      offCtx.fillRect(0, 0, offscreen.width, offscreen.height);
+      offCtx.fillStyle = "#ffffff";
+      offCtx.font = "bold 38px Impact, sans-serif";
+      offCtx.textAlign = "center";
+      offCtx.fillText("Template failed to load", offscreen.width / 2, offscreen.height / 2);
+      return offscreen;
+    }
+
+    function wrapLines(context, text, maxWidth) {
+      if (!text.trim()) {
+        return [];
+      }
+      const words = text.trim().split(/\s+/);
+      if (words.length === 1) {
+        return words;
+      }
+      const lines = [];
+      let current = words[0];
+
+      for (let i = 1; i < words.length; i++) {
+        const word = words[i];
+        const testLine = `${current} ${word}`;
+        if (context.measureText(testLine).width <= maxWidth) {
+          current = testLine;
+        } else {
+          lines.push(current);
+          current = word;
+        }
+      }
+      lines.push(current);
+      return lines;
+    }
+
+    function renderMemePair() {
+      const image = imageCache.get(activeTemplate.url);
+      if (!image) {
+        loadTemplateImage(activeTemplate.url);
+        return;
+      }
+      renderSingleMeme(canvasA, ctxA, currentPairs.A, captionReadoutA, image);
+      renderSingleMeme(canvasB, ctxB, currentPairs.B, captionReadoutB, image);
+    }
+
+    function renderSingleMeme(canvas, context, captions, readoutElement, image) {
+      const [topTextRaw, bottomTextRaw] = captions;
+      const topText = (topTextRaw || "").toUpperCase();
+      const bottomText = (bottomTextRaw || "").toUpperCase();
+
+      if (!image) {
+        return;
+      }
+
+      const maxWidth = 640;
+      const scale = Math.min(maxWidth / image.width, 1);
+      const canvasWidth = Math.round(image.width * scale);
+      const canvasHeight = Math.round(image.height * scale);
+
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      context.fillStyle = "#000";
+      context.fillRect(0, 0, canvasWidth, canvasHeight);
+      context.drawImage(image, 0, 0, canvasWidth, canvasHeight);
+
+      const fontSize = Math.max(28, Math.round(canvasWidth / 14));
+      const lineHeight = fontSize * 1.25;
+
+      context.font = `bold ${fontSize}px Impact, sans-serif`;
+      context.textAlign = "center";
+      context.fillStyle = "#ffffff";
+      context.lineJoin = "round";
+      context.lineWidth = Math.max(fontSize / 10, 4);
+      context.strokeStyle = "#000000";
+
+      drawCaption(context, topText, lineHeight + 10, lineHeight, canvas.width);
+      drawCaption(context, bottomText, canvasHeight - 20, lineHeight, canvas.width, true);
+
+      updateReadout(readoutElement, topTextRaw, bottomTextRaw);
+    }
+
+    function drawCaption(context, text, startY, step, canvasWidth, fromBottom = false) {
+      const maxWidth = canvasWidth - 40;
+      const lines = wrapLines(context, text, maxWidth);
+      if (!lines.length) {
+        return;
+      }
+
+      if (fromBottom) {
+        let y = startY;
+        for (let i = lines.length - 1; i >= 0; i--) {
+          const line = lines[i];
+          context.strokeText(line, canvasWidth / 2, y);
+          context.fillText(line, canvasWidth / 2, y);
+          y -= step;
+        }
+      } else {
+        let y = startY;
+        lines.forEach((line) => {
+          context.strokeText(line, canvasWidth / 2, y);
+          context.fillText(line, canvasWidth / 2, y);
+          y += step;
+        });
+      }
+    }
+
+    function updateReadout(element, top, bottom) {
+      const safeTop = top || "Awaiting caption";
+      const safeBottom = bottom || "Add more jokes to this combo.";
+      element.innerHTML = `
+        <span>${safeTop}</span>
+        <span>${safeBottom}</span>
+      `;
+    }
+
+    function handleShuffleCaptions() {
+      randomizeSelectors();
+      applyCaptionPairs(true);
+      feedbackStatus.textContent = "Rolled a new meme pair. Tell us which one lands better.";
+    }
+
+    function handleDownload(slot) {
+      const canvas = slot === "A" ? canvasA : canvasB;
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = `meme-${slot.toLowerCase()}-${activeTemplate.id}-${activeHumor.id}-${activeCleverness.id}.png`;
+      link.click();
+    }
+
+    function recordFeedback(slot) {
+      const winningPair = slot === "A" ? currentPairs.A : currentPairs.B;
+      const losingPair = slot === "A" ? currentPairs.B : currentPairs.A;
+      const entry = {
+        timestamp: new Date().toISOString(),
+        vibe: activeVibe.id,
+        humor: activeHumor.id,
+        cleverness: activeCleverness.id,
+        template: activeTemplate.id,
+        winner: slot,
+        winningCaption: winningPair,
+        losingCaption: losingPair
+      };
+      feedbackLog.unshift(entry);
+      if (feedbackLog.length > 8) {
+        feedbackLog.pop();
+      }
+      updateFeedbackList();
+      const vibeLabel = activeVibe.label;
+      const humorLabel = activeHumor.label;
+      const clevernessLabel = activeCleverness.label;
+      feedbackStatus.textContent = `Logged Meme ${slot} winning for ${vibeLabel} · ${humorLabel} · ${clevernessLabel}. Serving up a fresh matchup.`;
+      console.log("Humor Genome feedback", entry);
+    }
+
+    function updateFeedbackList() {
+      if (!feedbackLog.length) {
+        feedbackList.innerHTML = "";
+        return;
+      }
+      const items = feedbackLog.map((entry) => {
+        const readableTime = new Date(entry.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+        const vibeLabel = findLabelById(imageVibes, entry.vibe);
+        const humorLabel = findLabelById(humorStyles, entry.humor);
+        const clevernessLabel = findLabelById(clevernessLevels, entry.cleverness);
+        const winnerLabel = `Meme ${entry.winner}`;
+        return `
+          <li>
+            <div class="feedback-item-top">
+              <span>${winnerLabel}</span>
+              <span>${readableTime}</span>
+            </div>
+            <div class="feedback-item-meta">${vibeLabel} · ${humorLabel} · ${clevernessLabel}</div>
+          </li>
+        `;
+      });
+      feedbackList.innerHTML = items.join("");
+    }
+
+    function setupButtonFeedback() {
+      const buttons = document.querySelectorAll("button");
+      buttons.forEach((button) => {
+        const addPressed = () => button.classList.add("is-pressed");
+        const removePressed = () => button.classList.remove("is-pressed");
+
+        button.addEventListener("pointerdown", addPressed);
+        button.addEventListener("pointerup", removePressed);
+        button.addEventListener("pointerleave", removePressed);
+        button.addEventListener("pointercancel", removePressed);
+        button.addEventListener("blur", removePressed);
+
+        button.addEventListener("keydown", (event) => {
+          if (event.key === " " || event.key === "Enter") {
+            addPressed();
+          }
+        });
+
+        button.addEventListener("keyup", (event) => {
+          if (event.key === " " || event.key === "Enter") {
+            removePressed();
+          }
+        });
+      });
+    }
+
+    function initializeEventHandlers() {
+      vibeSelect.addEventListener("change", (event) => {
+        setImageVibe(event.target.value, true);
+      });
+
+      humorSelect.addEventListener("change", (event) => {
+        setHumorById(event.target.value, true);
+      });
+
+      clevernessSelect.addEventListener("change", (event) => {
+        setClevernessById(event.target.value, true);
+      });
+
+      shuffleButton.addEventListener("click", handleShuffleCaptions);
+
+      downloadBtnA.addEventListener("click", () => handleDownload("A"));
+      downloadBtnB.addEventListener("click", () => handleDownload("B"));
+
+      voteButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          recordFeedback(button.dataset.slot);
+          applyCaptionPairs(true);
+        });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      populateSelectors();
+
+      vibeSelect.value = activeVibe.id;
+      humorSelect.value = activeHumor.id;
+      clevernessSelect.value = activeCleverness.id;
+
+      updateSelectorNotes();
+      updateGenomeSummary();
+
+      loadTemplateImage(activeTemplate.url);
+      applyCaptionPairs(true);
+
+      setupButtonFeedback();
+      initializeEventHandlers();
+    });
+  </script>
+</body>
+</html>

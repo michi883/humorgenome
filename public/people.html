@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Humor Genome – People</title>
+
+  <!-- Analytics (match main site) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C7RP3D0GMY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-C7RP3D0GMY');
+  </script>
+
+  <!-- Meta -->
+  <meta name="description" content="Meet the contributors building the Humor Genome – roles, projects, and collaboration interests." />
+  <meta name="keywords" content="Humor Genome, contributors, people, community, roles, projects" />
+  <meta name="author" content="Humor Genome Project, Midtown Show" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://humorgenome.org/people" />
+  <link rel="icon" href="/favicon.ico?v=2" type="image/x-icon" />
+
+  <meta property="og:site_name" content="Humor Genome" />
+  <meta property="og:title" content="Humor Genome — People" />
+  <meta property="og:description" content="A curated snapshot of who is working on what across the Humor Genome Project." />
+  <meta property="og:url" content="https://humorgenome.org/people" />
+  <meta property="og:image" content="https://humorgenome.org/hg_logo_120.webp" />
+  <meta property="og:type" content="website" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@midtownshow" />
+  <meta name="twitter:title" content="Humor Genome — People" />
+  <meta name="twitter:description" content="Meet the people behind the Humor Genome Project." />
+  <meta name="twitter:image" content="https://humorgenome.org/hg_logo_120.webp" />
+
+  <style>
+    :root{
+      --bg:#0b0b10; --panel:#11121a; --muted:#a6adbb; --text:#e8ecf3;
+      --accent:#8ae6ff; --accent-2:#ffd38a; --ring: rgba(138,230,255,.4);
+      --radius:18px; --shadow:0 10px 25px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.035)
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,"Helvetica Neue",Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(138,230,255,.18), transparent 60%),
+        radial-gradient(900px 500px at -10% 10%, rgba(255,211,138,.12), transparent 60%),
+        var(--bg);
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin-inline:auto;padding:0 20px}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+    /* Nav */
+    .nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg, rgba(11,11,16,.9), rgba(11,11,16,.6));backdrop-filter: blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand { display:flex; align-items:center; gap:0 }
+    .brand-banner { display:block; height:50px; width:auto; filter: brightness(4); }
+    .links{display:flex;gap:18px;align-items:center}
+    .menu-btn{display:none;border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border-radius:12px;padding:10px 12px;box-shadow:var(--shadow);font:inherit;color:inherit}
+
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.09);background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));box-shadow:var(--shadow);transition:transform .12s ease, box-shadow .2s ease, border-color .2s}
+    .btn:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.18)}
+    .btn.primary{position: relative;border-color: rgba(138,230,255,.6);background: linear-gradient(180deg, #8ae6ff, #5fd7ff);color: #0b0b10;font-weight: 700;text-shadow: 0 1px 0 rgba(255,255,255,.35);box-shadow:0 8px 28px rgba(138,230,255,.35),inset 0 1px 0 rgba(255,255,255,.7)}
+    .btn.primary:hover{ transform: translateY(-1px); box-shadow:0 10px 36px rgba(138,230,255,.45), inset 0 1px 0 rgba(255,255,255,.8)}
+
+    /* Hero */
+    .hero{padding:84px 0 20px}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:999px;padding:6px 10px}
+    .spark{width:6px;height:6px;border-radius:999px;background:var(--accent);box-shadow:0 0 0 6px rgba(138,230,255,.12)}
+    h1{font-size:clamp(34px,5vw,56px);line-height:1.07;margin:18px 0 14px}
+    .lead{max-width:820px;color:#cdd3df;font-size:clamp(16px,2.2vw,19px)}
+    .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+    /* Grid */
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin:26px 0}
+    .card{grid-column:span 4;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    @media (max-width: 800px){ .grid .card{grid-column: span 12} .brand-banner{height:32px} .links{position: fixed; inset: 56px 12px auto 12px; display: none; flex-direction: column; gap: 10px; padding:12px; border-radius:14px; background:linear-gradient(180deg, rgba(20,20,28,.96), rgba(20,20,28,.92)); border:1px solid rgba(255,255,255,.08); box-shadow: 0 16px 40px rgba(0,0,0,.45)} .menu-btn{display:inline-flex} .nav-inner{padding:10px 0} .card{padding:16px}}
+    @media (max-width: 360px){ h1{font-size: clamp(28px, 9vw, 34px)} }
+    @media (prefers-reduced-motion: reduce){ .btn,.btn:hover{transition:none} }
+
+    /* People cards */
+    .person{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start}
+    .avatar{width:64px;height:64px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow);background:linear-gradient(135deg,#203244,#1a1f2a)}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .placeholder{display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.5px;color:#cfefff;background:linear-gradient(135deg,#183243,#0f1a26)}
+    .role{display:inline-flex;gap:8px;flex-wrap:wrap;margin:6px 0 8px}
+    .tag{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.1);color:#d7dbe6;background:rgba(255,255,255,.02);white-space:nowrap}
+    .blurb{color:#c8cfdb;margin:6px 0 10px}
+    .meta{display:flex;gap:10px;flex-wrap:wrap}
+    .meta a{font-size:13px;opacity:.95}
+    .section-title{margin:8px 0 8px;font-size:20px}
+    .kicker{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+
+    /* Filters */
+    .filters{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .input, .select{
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius:12px;color:var(--text);padding:10px 12px;box-shadow:var(--shadow);font:inherit
+    }
+    .note{color:#b9bfcb;font-size:14px}
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 0 40px;color:#b9bfcb}
+    .foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Primary">
+    <div class="wrap nav-inner">
+      <a class="brand" href="/" aria-label="Humor Genome – Home">
+        <img class="brand-banner" src="/hg_banner_500.webp" alt="Humor Genome" width="500" height="151" loading="eager" decoding="async" />
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="primary-links">Menu</button>
+      <div class="links" id="primary-links">
+        <a href="/">Home</a>
+        <a href="#impact">Impact</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#behind">Behind the MVD</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="wrap hero">
+    <span class="eyebrow"><span class="spark"></span> Community</span>
+    <h1>People of the Humor Genome</h1>
+    <p class="lead">
+      This page is a curated snapshot of who is working on what. Submissions live in an editable community form, and our team maintains this page so visitors can quickly see active roles, projects, and collaboration needs.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="https://forms.gle/jM9T8dqajqQNiCK18">Submit your role & project</a>
+    </div>
+    <p class="note" style="margin-top:10px">Note: The People page is reviewed and updated separately from the form. You can edit your own submission any time.</p>
+    <div class="filters">
+      <input id="search" class="input" type="search" placeholder="Search by name, role, or project" aria-label="Search" />
+      <select id="roleFilter" class="select" aria-label="Filter by role">
+        <option value="">All roles</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- CORE TEAM -->
+  <section class="wrap" id="core">
+    <p class="kicker">Core Team</p>
+    <h2 class="section-title">Stewards and editors</h2>
+    <div class="grid" id="coreGrid" role="list"></div>
+  </section>
+
+  <!-- ACTIVE CONTRIBUTORS -->
+  <section class="wrap" id="contributors">
+    <p class="kicker">Active Contributors</p>
+    <h2 class="section-title">Projects in motion</h2>
+    <div class="grid" id="contribGrid" role="list"></div>
+  </section>
+
+  <!-- IN PROGRESS / OPEN TO COLLAB -->
+  <section class="wrap" id="in-progress">
+    <p class="kicker">In Progress</p>
+    <h2 class="section-title">Open to collaborate</h2>
+    <div class="grid" id="progressGrid" role="list"></div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <small>© <span id="year"></span> Humor Genome. Some rights reserved.</small>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a class="btn" href="#" onclick="scrollTo({top:0,behavior:'smooth'})">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const links = document.getElementById('primary-links');
+    function toggleMenu(explicit){
+      const open = explicit ?? menuBtn.getAttribute('aria-expanded') === 'false';
+      document.body.classList.toggle('mobile-open', open);
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if(open){ links.querySelector('a')?.focus(); }
+    }
+    menuBtn.addEventListener('click', () => toggleMenu());
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ toggleMenu(false); } });
+    links.addEventListener('click', (e)=>{ if(e.target.tagName === 'A'){ toggleMenu(false); } });
+
+    // --- People data (starter sample) ---
+    // group: core | contributors | progress
+    // role: primary role label
+    // tags: quick facets for filtering
+    // img: optional headshot. If omitted, a placeholder with initials is used.
+    const members = [
+      {
+        name: "Michi Yamamoto",
+        role: "Project Steward",
+        group: "core",
+        tags: ["Product", "Community", "Benchmark"],
+        blurb: "Founder of Humor Genome. Focus on taxonomy quality, dataset standards, and partnerships.",
+        links: [{label:"Discord", url:"#discord"}, {label:"Site", url:"https://humorgenome.org/#site"}],
+        img: "" // use placeholder
+      },
+      {
+        name: "Simon",
+        role: "Behavioral Data Scientist",
+        group: "contributors",
+        tags: ["Quant", "Evaluation", "Experiment Design"],
+        blurb: "Exploring quantitative signals for humor mechanisms and rubric calibration.",
+        links: [{label:"Discord", url:"#discord"}],
+        img: ""
+      },
+      {
+        name: "Celester",
+        role: "Humor Researcher",
+        group: "contributors",
+        tags: ["Delivery", "Deferred Humor", "Cultural Context"],
+        blurb: "Studying how absence, timing, and passive performance shape comedic effect.",
+        links: [{label:"Discord", url:"#discord"}],
+        img: ""
+      },
+      {
+        name: "Rachel",
+        role: "Success Story Builder",
+        group: "progress",
+        tags: ["Case Studies", "Creator Relations"],
+        blurb: "Drafting early success narratives that connect creators, businesses, and HG tools.",
+        links: [{label:"Discord", url:"#discord"}],
+        img: ""
+      },
+      {
+        name: "Michael",
+        role: "Data Wrangler",
+        group: "progress",
+        tags: ["Data Pipelines", "Benchmark Builder"],
+        blurb: "Standing up lightweight ingestion and cleaning for the pilot dataset.",
+        links: [{label:"Discord", url:"#discord"}],
+        img: ""
+      },
+      {
+        name: "Graham",
+        role: "Product Partner",
+        group: "core",
+        tags: ["Product Strategy", "Go-To-Market"],
+        blurb: "Advising on commercialization paths and model evaluation use cases.",
+        links: [{label:"LinkedIn", url:"#linkedin"}],
+        img: ""
+      },
+      {
+        name: "Jason",
+        role: "Ads & Partnerships",
+        group: "progress",
+        tags: ["Revenue", "Partnerships"],
+        blurb: "Exploring brand-safe humor pilots and marketplace collaborations.",
+        links: [{label:"LinkedIn", url:"#linkedin"}],
+        img: ""
+      },
+      {
+        name: "Dave",
+        role: "Comedic Editor",
+        group: "contributors",
+        tags: ["Punch-up", "Premise Testing"],
+        blurb: "Helping pressure-test joke annotations against real comedic craft.",
+        links: [{label:"Discord", url:"#discord"}],
+        img: ""
+      }
+    ];
+
+    // Build role options
+    const roleSet = new Set(members.map(m => m.role));
+    const roleSelect = document.getElementById('roleFilter');
+    [...roleSet].sort().forEach(r => {
+      const opt = document.createElement('option');
+      opt.value = r; opt.textContent = r;
+      roleSelect.appendChild(opt);
+    });
+
+    // Helpers: placeholder avatar with initials
+    function initials(name){
+      const parts = name.trim().split(/\s+/);
+      const first = parts[0]?.[0] ?? "";
+      const last = parts[1]?.[0] ?? "";
+      return (first + last).toUpperCase();
+    }
+    function avatarEl(member){
+      const wrap = document.createElement('div');
+      wrap.className = 'avatar';
+      if(member.img){
+        const img = document.createElement('img');
+        img.src = member.img;
+        img.alt = member.name;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        wrap.appendChild(img);
+      } else {
+        const ph = document.createElement('div');
+        ph.className = 'placeholder';
+        ph.textContent = initials(member.name) || 'HG';
+        wrap.appendChild(ph);
+      }
+      return wrap;
+    }
+
+    // Render a person card
+    function card(member){
+      const c = document.createElement('article');
+      c.className = 'card';
+      c.setAttribute('role','listitem');
+
+      const p = document.createElement('div');
+      p.className = 'person';
+
+      const av = avatarEl(member);
+      p.appendChild(av);
+
+      const body = document.createElement('div');
+
+      const name = document.createElement('h3');
+      name.style.margin = '0 0 2px';
+      name.style.fontSize = '18px';
+      name.textContent = member.name;
+      body.appendChild(name);
+
+      const roles = document.createElement('div');
+      roles.className = 'role';
+      const roleTag = document.createElement('span');
+      roleTag.className = 'tag';
+      roleTag.textContent = member.role;
+      roles.appendChild(roleTag);
+      (member.tags || []).forEach(t => {
+        const s = document.createElement('span');
+        s.className = 'tag';
+        s.textContent = t;
+        roles.appendChild(s);
+      });
+      body.appendChild(roles);
+
+      if(member.blurb){
+        const bl = document.createElement('p');
+        bl.className = 'blurb';
+        bl.textContent = member.blurb;
+        body.appendChild(bl);
+      }
+
+      if(member.links?.length){
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        member.links.forEach(l => {
+          const a = document.createElement('a');
+          a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+          a.className = 'btn'; a.style.padding = '6px 10px'; a.style.fontSize = '13px';
+          a.textContent = l.label;
+          meta.appendChild(a);
+        });
+        body.appendChild(meta);
+      }
+
+      p.appendChild(body);
+      c.appendChild(p);
+      return c;
+    }
+
+    // Mount groups
+    const coreGrid = document.getElementById('coreGrid');
+    const contribGrid = document.getElementById('contribGrid');
+    const progressGrid = document.getElementById('progressGrid');
+
+    function mount(list){
+      coreGrid.innerHTML = '';
+      contribGrid.innerHTML = '';
+      progressGrid.innerHTML = '';
+      list.forEach(m => {
+        const el = card(m);
+        if(m.group === 'core') coreGrid.appendChild(el);
+        else if(m.group === 'contributors') contribGrid.appendChild(el);
+        else progressGrid.appendChild(el);
+      });
+    }
+
+    // Initial render
+    mount(members);
+
+    // Filters
+    const search = document.getElementById('search');
+    function applyFilters(){
+      const q = search.value.toLowerCase().trim();
+      const role = roleSelect.value;
+
+      const filtered = members.filter(m => {
+        const inRole = !role || m.role === role;
+        if(!q) return inRole;
+        const hay = [
+          m.name, m.role, m.blurb || '', ...(m.tags || [])
+        ].join(' ').toLowerCase();
+        return inRole && hay.includes(q);
+      });
+      mount(filtered);
+    }
+    search.addEventListener('input', applyFilters);
+    roleSelect.addEventListener('change', applyFilters);
+  </script>
+</body>
+</html>

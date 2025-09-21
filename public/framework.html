@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Humor Genome Framework — Building AI That Gets the Joke</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C7RP3D0GMY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-C7RP3D0GMY');
+  </script>
+
+  <meta name="title" content="Humor Genome Framework — Building AI That Gets the Joke">
+  <meta name="description" content="Explore the Humor Genome Framework (v0.4): taxonomy, dimensions, corpus, and benchmarks for teaching AI to understand humor.">
+  <meta name="keywords" content="humor genome, comedy AI, humor taxonomy, humor dataset, humor benchmark, AI comedy research">
+  <meta name="author" content="Humor Genome Project">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://humorgenome.org/framework" />
+  <link rel="icon" href="favicon.ico?v=2" type="image/x-icon" />
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://humorgenome.org/framework">
+  <meta property="og:title" content="Humor Genome Framework — Building AI That Gets the Joke">
+  <meta property="og:description" content="Explore the Humor Genome Framework (v0.4): taxonomy, dimensions, corpus, and benchmarks for teaching AI to understand humor.">
+  <meta property="og:image" content="https://humorgenome.org/hg_banner_500.webp">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://humorgenome.org/framework">
+  <meta name="twitter:title" content="Humor Genome Framework — Building AI That Gets the Joke">
+  <meta name="twitter:description" content="Explore the Humor Genome Framework (v0.4): taxonomy, dimensions, corpus, and benchmarks for teaching AI to understand humor.">
+  <meta name="twitter:image" content="https://humorgenome.org/hg_banner_500.webp">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+
+    :root{
+      --bg:#0b1020; --panel:#0f1630; --ink:#e8ecff; --muted:#a8b2d8;
+      --accent:#7dd3fc; --accent-2:#c084fc; --accent-3:#34d399; --accent-4:#fbbf24;
+      --card:#121a3aee; --border:#2a3566; --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.02);
+      --warning:#ef4444; --success:#10b981;
+    }
+
+    body{
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 20% 15%, #14224f 0%, transparent 60%),
+        radial-gradient(1000px 700px at 80% 90%, #1a2a60 0%, transparent 60%),
+        linear-gradient(160deg, #0a0f21 0%, #060912 100%);
+      letter-spacing:.2px;
+    }
+    .grid-bg{position:fixed; inset:0; pointer-events:none; opacity:.18;
+      background:
+        linear-gradient(transparent 95%, rgba(125,211,252,.25) 100%),
+        linear-gradient(90deg, transparent 95%, rgba(192,132,252,.25) 100%);
+      background-size:40px 40px, 40px 40px;
+      mask:radial-gradient(600px 600px at 50% 40%, black 0%, transparent 70%);
+      animation:drift 22s linear infinite;
+    }
+    @keyframes drift { to { background-position:0 40px, 40px 0; } }
+
+    .wrap{min-height:100dvh; display:grid; place-items:center; padding:24px;}
+    .slide{width:min(1300px,96vw); position:relative;}
+
+    .header{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:20px;}
+    .title{font-size:clamp(30px,3.4vw,48px); font-weight:800; line-height:1.05;}
+    .subtitle{color:var(--muted); font-size:clamp(12px,1.3vw,14px); letter-spacing:.6px; text-transform:uppercase;}
+
+    /* Enhanced premise with clearer structure */
+    .premise{
+      background:linear-gradient(180deg, #0f1738dd, #0c1331dd);
+      border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:clamp(16px,2.4vw,24px);
+      display:grid; grid-template-columns:52px 1fr; gap:16px; align-items:flex-start;
+      margin-bottom:20px;
+    }
+    .dna{width:44px; height:44px; border-radius:12px; display:grid; place-items:center;
+      background:linear-gradient(145deg, var(--accent), var(--accent-2));
+      filter:drop-shadow(0 6px 16px rgba(125,211,252,.2));
+      flex-shrink:0;
+    }
+    .premise-content h2{margin:0 0 8px 0; font-size:clamp(16px,1.8vw,20px); font-weight:700;}
+    .premise-content p{margin:0 0 8px 0; color:var(--ink); font-size:clamp(14px,1.6vw,17px); line-height:1.4;}
+    .premise-content .key-insight{font-size:clamp(13px,1.4vw,15px); color:var(--accent); font-style:italic;}
+
+    /* Problem statement section */
+    .problem-section{
+      background:linear-gradient(180deg, rgba(239,68,68,.08), rgba(239,68,68,.04));
+      border:1px solid rgba(239,68,68,.2); border-radius:var(--radius);
+      padding:clamp(14px,1.8vw,18px); margin-bottom:16px;
+    }
+    .problem-section h3{margin:0 0 8px 0; font-size:clamp(14px,1.4vw,16px); color:#fca5a5; font-weight:600;}
+    .problem-section p{margin:0; font-size:clamp(12px,1.2vw,14px); color:var(--muted); line-height:1.4;}
+
+    /* Success metrics */
+    .success-section{
+      background:linear-gradient(180deg, rgba(16,185,129,.08), rgba(16,185,129,.04));
+      border:1px solid rgba(16,185,129,.2); border-radius:var(--radius);
+      padding:clamp(14px,1.8vw,18px); margin-bottom:20px;
+    }
+    .success-section h3{margin:0 0 8px 0; font-size:clamp(14px,1.4vw,16px); color:#6ee7b7; font-weight:600;}
+    .success-section ul{margin:0; padding-left:16px; font-size:clamp(12px,1.2vw,13px); color:var(--muted); line-height:1.45;}
+    .success-section li{margin:2px 0;}
+
+    .flow{display:grid; grid-template-columns:repeat(4, 1fr); gap:clamp(12px,1.6vw,18px); position:relative;}
+    
+    .node{
+      background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+      padding:clamp(16px,1.8vw,20px); box-shadow:var(--shadow); position:relative; overflow:hidden;
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      display:flex; flex-direction:column;
+    }
+    .node:hover{ transform:translateY(-2px); border-color:#3a4a8f; box-shadow:0 16px 40px rgba(0,0,0,.45); }
+    
+    .node-header{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+    .node-icon{width:32px; height:32px; border-radius:8px; display:grid; place-items:center; flex-shrink:0;
+      font-size:16px; filter:drop-shadow(0 2px 8px rgba(0,0,0,.3));}
+    .chip{font-size:10px; letter-spacing:.6px; text-transform:uppercase; color:var(--muted); margin-bottom:4px;}
+    .node h3{margin:0; font-size:clamp(16px,1.6vw,18px); letter-spacing:.3px; font-weight:700;}
+    
+    .node-content{flex:1;}
+    .node ul{margin:10px 0 0 0; padding-left:16px; line-height:1.45; color:#d7defc; font-size:clamp(12px,1.25vw,14px);}
+    .node li{margin:3px 0;}
+    
+    .example-box{margin-top:10px; padding:8px 12px; background:rgba(125,211,252,.06); 
+      border-radius:8px; border-left:3px solid var(--accent);}
+    .example-box .label{font-size:10px; text-transform:uppercase; color:var(--accent); margin-bottom:4px; font-weight:600;}
+    .example-box .text{font-size:12px; color:#c7d2fe; font-style:italic;}
+
+    /* Enhanced visual accents */
+    .node[data-accent="1"] .node-icon{ background:linear-gradient(145deg, var(--accent), #0ea5e9); }
+    .node[data-accent="2"] .node-icon{ background:linear-gradient(145deg, var(--accent-2), #a855f7); }
+    .node[data-accent="3"] .node-icon{ background:linear-gradient(145deg, var(--accent-3), #059669); }
+    .node[data-accent="4"] .node-icon{ background:linear-gradient(145deg, var(--accent-4), #f59e0b); }
+
+    .node[data-accent="1"]::before,
+    .node[data-accent="2"]::before,
+    .node[data-accent="3"]::before,
+    .node[data-accent="4"]::before{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(90deg, transparent, rgba(125,211,252,.06));
+      mask:linear-gradient(180deg, rgba(0,0,0,.0) 0%, rgba(0,0,0,.4) 30%, rgba(0,0,0,.8) 100%);
+    }
+    .node[data-accent="2"]::before{ background:linear-gradient(90deg, transparent, rgba(192,132,252,.06)); }
+    .node[data-accent="3"]::before{ background:linear-gradient(90deg, transparent, rgba(52,211,153,.06)); }
+    .node[data-accent="4"]::before{ background:linear-gradient(90deg, transparent, rgba(251,191,36,.06)); }
+
+    .arrows{ position:absolute; inset:-8px; pointer-events:none; z-index:1; }
+
+    .bottom-section{display:grid; grid-template-columns:2fr 1fr; gap:20px; align-items:flex-start; margin-top:20px;}
+    
+    .apps{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+    .apps .badge{border:1px solid var(--border); background:linear-gradient(180deg, #0f1534, #0c122b);
+      padding:6px 12px; border-radius:999px; font-size:12px; color:#d6dbff; box-shadow:var(--shadow);}
+    
+    .timeline{background:rgba(251,191,36,.06); border:1px solid rgba(251,191,36,.2); 
+      border-radius:var(--radius); padding:16px;}
+    .timeline h4{margin:0 0 8px 0; font-size:14px; color:var(--accent-4); font-weight:600;}
+    .timeline .phase{margin:6px 0; font-size:12px; color:var(--muted);}
+    .timeline .phase strong{color:var(--ink);}
+
+    .equation{margin-top:16px; font-size:14px; color:var(--muted); letter-spacing:.4px; text-align:center;}
+    .equation b{color:var(--ink);}
+
+    /* Tooltip definitions */
+    .tooltip{position:relative; border-bottom:1px dotted var(--accent); cursor:help;}
+    .tooltip:hover::after{
+      content:attr(data-tooltip); position:absolute; bottom:100%; left:50%;
+      transform:translateX(-50%); background:#1a2332; color:#e2e8f0; padding:8px 12px;
+      border-radius:8px; font-size:11px; white-space:nowrap; z-index:10;
+      box-shadow:0 4px 12px rgba(0,0,0,.3); border:1px solid var(--border);
+    }
+
+    @media (max-width:1100px){ 
+      .flow{ grid-template-columns:1fr 1fr; } 
+      .bottom-section{ grid-template-columns:1fr; gap:16px; }
+      .arrows{ display:none; } 
+    }
+    @media (max-width:650px){ 
+      .header{ flex-direction:column; align-items:flex-start; gap:6px; } 
+      .flow{ grid-template-columns:1fr; }
+      .premise{ grid-template-columns:1fr; text-align:center; }
+      .premise .dna{ justify-self:center; margin-bottom:12px; }
+    }
+
+    @media print { 
+      body{background:white; color:#0b1020;} 
+      .grid-bg{display:none;} 
+      .node,.premise,.problem-section,.success-section{box-shadow:none;} 
+      .slide{width:100%;} 
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="slide" role="region" aria-label="Humor Genome Framework">
+
+      <header class="header">
+        <div>
+          <div class="subtitle">Critical Framework · v0.4</div>
+          <h1 class="title">Humor Genome</h1>
+        </div>
+        <div class="subtitle">Building AI That Truly Gets The Joke</div>
+      </header>
+
+      <div class="premise" role="note">
+        <div class="dna" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 5c4 0 6 3 6 7s2 7 6 7" stroke="#051022" stroke-width="1.5"/>
+            <path d="M18 5c-4 0-6 3-6 7s-2 7-6 7" stroke="#051022" stroke-width="1.5"/>
+            <path d="M4 9h16M4 15h16" stroke="#051022" stroke-width="1.5" opacity=".8"/>
+          </svg>
+        </div>
+        <div class="premise-content">
+          <h2>Core Premise</h2>
+          <p>Humor has identifiable patterns like music's rhythm and melody. By systematically mapping these patterns, we can build AI systems that truly understand humor.</p>
+          <div class="key-insight">Our approach: Combine structured taxonomy, measurable dimensions, curated data, and rigorous evaluation.</div>
+        </div>
+      </div>
+
+      <div class="problem-section">
+        <h3>🚨 The Problem</h3>
+        <p>Current AI systems fail at humor because they lack systematic understanding of comedic mechanisms, cultural context, and audience dynamics—leading to awkward, inappropriate, or simply unfunny responses.</p>
+      </div>
+
+      <div class="success-section">
+        <h3>🎯 Success Looks Like</h3>
+        <ul>
+          <li><strong>AI assistants</strong> that can engage in natural comedic banter</li>
+          <li><strong>Content platforms</strong> that automatically adapt humor to audience preferences</li>
+          <li><strong>Creative tools</strong> that help comedians test and refine material</li>
+        </ul>
+      </div>
+
+      <div class="flow">
+        <svg class="arrows" viewBox="0 0 1300 400" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+              <path d="M0,0 L10,5 L0,10 Z" fill="url(#flowGrad)"/>
+            </marker>
+            <linearGradient id="flowGrad" x1="0" x2="1">
+              <stop offset="0%" stop-color="#7dd3fc"/>
+              <stop offset="50%" stop-color="#c084fc"/>
+              <stop offset="100%" stop-color="#34d399"/>
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <article class="node" data-accent="1">
+          <div class="chip">Foundation</div>
+          <div class="node-header">
+            <div class="node-icon">🧬</div>
+            <h3>Taxonomy</h3>
+          </div>
+          <div class="node-content">
+            <ul>
+              <li><strong>Linguistic:</strong> Puns, wordplay, ambiguity/double-entendre, rhyme/alliteration, malapropism</li>
+              <li><strong>Conceptual:</strong> Absurdity, misdirection/surprise, paradox/self-reference, analogy, superiority/roast</li>
+              <li><strong>Contextual:</strong> Satire, parody, cultural/reference & stereotypes, <span class="chip-mini">Dark/Gallows</span>, era sensitivity</li>
+              <li><strong>Performance:</strong> Delivery/cadence/timing, impressions/“funny voice”, act-outs, physical/slapstick, props</li>
+              <li><strong>Format / Schema:</strong> Knock-knock, “X walks into a bar…”, lightbulb jokes, set-templates, memes/remixes</li>
+              <li><strong>Cognitive / Logical:</strong> Puzzle-like jokes, cognitive-load payoff, deadpan/understatement</li>
+            </ul>
+            <div class="example-box">
+              <div class="label">Example</div>
+              <div class="text">"I told my wife she was drawing her eyebrows too high. She looked surprised." → <strong>Linguistic</strong> (wordplay) + <strong>Conceptual</strong> (surprise)</div>
+            </div>
+          </div>
+        </article>
+        <article class="node" data-accent="3">
+          <div class="chip">Data</div>
+          <div class="node-header">
+            <div class="node-icon">📚</div>
+            <h3>Corpus</h3>
+          </div>
+          <div class="node-content">
+            <ul>
+              <li><strong>Short-text:</strong> Jokes, Tweets, Captions</li>
+              <li><strong>Long-text:</strong> Stand-up Transcripts, Scripts, Literature</li>
+              <li><strong>Multi-modal:</strong> Memes, Images, Video, Audio</li>
+              <li><strong>Dialogue:</strong> Conversational exchanges, Improv, Chat logs</li>
+              <li><strong>Annotation:</strong> Type + Dimension scores (1–5), Marking delivery features (cadence, emphasis, “funny voice”), Labels for humor blur/overlap (e.g., sarcasm vs irony)</li>
+              <li><strong>Context:</strong> Culture, Age, Medium, Era, Historical shifts (e.g., “gay” = happy → sexuality), Dark vs light humor segmentation (coping vs defiance), Taste analogy: audience “palates” differ like food preferences</li>
+            </ul>
+            <div class="example-box">
+              <div class="label">Meme Example</div>
+              <div class="text">Distracted Boyfriend → <strong>Format</strong> + Cultural Reference, High Relatability</div>
+            </div>
+          </div>
+        </article><article class="node" data-accent="2">
+          <div class="chip">Measurement</div>
+          <div class="node-header">
+            <div class="node-icon">📊</div>
+            <h3>Dimensions</h3>
+          </div>
+          <div class="node-content">
+            <ul>
+              <li><strong>Incongruity:</strong> How unexpected the punchline</li>
+              <li><strong>Relatability:</strong> Audience connection level</li>
+              <li><strong>Cleverness:</strong> Intellectual sophistication required</li>
+              <li><strong>Benign Violation:</strong> Safe boundary‑pushing</li>
+              <li><strong>Taboo Intensity:</strong> Controversial content level</li>
+              <li><strong>Timing:</strong> Effect of pacing or pause on humor</li>
+              <li><strong>Surprise Factor:</strong> Degree of unexpectedness in punchline</li>
+              <li><strong>Emotional Resonance:</strong> Level of vulnerability or shared feeling</li>
+              <li><strong>Cultural Specificity:</strong> Dependence on shared cultural knowledge</li>
+            </ul>
+            <div class="example-box">
+              <div class="label">Dad Joke Profile</div>
+              <div class="text">High <em>Relatability</em>, Low <em>Complexity</em>, Minimal <em>Taboo</em></div>
+            </div>
+          </div>
+        </article><article class="node" data-accent="4">
+          <div class="chip">Validation</div>
+          <div class="node-header">
+            <div class="node-icon">🎯</div>
+            <h3>Benchmark</h3>
+          </div>
+          <div class="node-content">
+            <ul>
+              <li><strong>Binary Humor Detection:</strong> Funny vs. Not funny (baseline)</li>
+              <li><strong>Classification:</strong> Identify humor types (F1 score)</li>
+              <li><strong>Generation:</strong> Create targeted humor (human ratings)</li>
+              <li><strong>Prediction:</strong> Forecast audience reactions (accuracy)</li>
+              <li><strong>Portability:</strong> Cross‑cultural transfer testing</li>
+              <li><strong>Multi-Objective Optimization:</strong> Balance humor quality, appropriateness, and audience engagement using reinforcement learning methods</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+
+      <div class="bottom-section">
+        <div>
+          <div class="apps" aria-label="Applications">
+            <span class="badge">🎭 Comedians</span>
+            <span class="badge">🎬 Creators</span>
+            <span class="badge">🤖 AI Systems</span>
+            <span class="badge">🔬 Research</span>
+          </div>
+          <div class="equation">⚡️ <b>Taxonomy</b> + <b>Corpus</b> + <b>Dimensions</b> + <b>Benchmark</b> = <b>Humor Genome</b></div>
+        </div>
+
+        <div class="timeline">
+          <h4>🚀 Development Phases</h4>
+          <div class="phase"><strong>Phase 1:</strong> Core Taxonomy + Basic Corpus</div>
+          <div class="phase"><strong>Phase 2:</strong> Dimension Framework + Annotation</div>
+          <div class="phase"><strong>Phase 3:</strong> Benchmark Suite + Model Training</div>
+          <div class="phase"><strong>Phase 4:</strong> Real-world Applications</div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
