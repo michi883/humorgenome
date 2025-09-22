@@ -498,18 +498,18 @@
 
     const clevernessLevels = [
       {
-        id: "breezy",
-        label: "Breezy",
+        id: "simple",
+        label: "Simple",
         description: "Instantly accessible. Anyone can get the joke."
       },
       {
-        id: "wry",
-        label: "Wry",
+        id: "clever",
+        label: "Clever",
         description: "Rewards context. Perfect for knowing nods."
       },
       {
-        id: "galaxy",
-        label: "Galaxy Brain",
+        id: "genius",
+        label: "Genius",
         description: "Layered references for the meme sommeliers."
       }
     ];
@@ -520,7 +520,7 @@
         label: "Lighthearted",
         description: "Keep it upbeat and serotonin-rich.",
         captions: {
-          breezy: [
+          simple: [
             ["Sunshine in my coffee", "Confetti in my inbox"],
             ["When plans change", "and the vibe gets better"],
             ["Accidentally wholesome", "on purpose now"],
@@ -528,7 +528,7 @@
             ["Entire to-do list", "dancing to good vibes"],
             ["Somehow Monday", "feels like a soft launch"]
           ],
-          wry: [
+          clever: [
             ["Chasing serotonin like", "it's a limited edition drop"],
             ["Group chat agrees we're thriving", "via pizza emojis only"],
             ["Optimism but make it", "strategically scheduled"],
@@ -536,7 +536,7 @@
             ["We optimized joy", "with scheduled dance breaks"],
             ["Forecast: 80% chance", "of spontaneous compliments"]
           ],
-          galaxy: [
+          genius: [
             ["Quantum of solace", "measured in meme reactions"],
             ["Entropy can't keep up", "with our good mood algorithm"],
             ["Emotional ROI", "doubling every laugh cycle"],
@@ -551,7 +551,7 @@
         label: "Sarcastic",
         description: "Deliver the side-eye, digitally.",
         captions: {
-          breezy: [
+          simple: [
             ["Wow another brainstorm", "can't contain the excitement"],
             ["Sure let's pivot again", "reality's on shuffle"],
             ["My enthusiasm?", "On a coffee break"],
@@ -559,7 +559,7 @@
             ["Put it on my calendar", "right between sighs"],
             ["Another hero emerges", "spoiler: still not me"]
           ],
-          wry: [
+          clever: [
             ["Deliverables due yesterday", "per the time-travel brief"],
             ["Synergy requested", "snark delivered"],
             ["Putting the 'pro' in", "procrastinated sarcasm"],
@@ -567,7 +567,7 @@
             ["KPIs: Keep Pretending", "Impressed? maybe."],
             ["Moved the deadline needle", "straight into satire"]
           ],
-          galaxy: [
+          genius: [
             ["Irony density detected", "initiating defensive wit"],
             ["Schrödinger's deadline", "both met and ignored"],
             ["Sarcasm bandwidth", "exceeds corporate firewall"],
@@ -582,7 +582,7 @@
         label: "Self-Deprecating",
         description: "Lovingly roast yourself before anyone else can.",
         captions: {
-          breezy: [
+          simple: [
             ["Goal: be organized", "Outcome: interpretive dance"],
             ["Brain cells on strike", "left me in charge"],
             ["Productivity level", "meme archivist"],
@@ -590,7 +590,7 @@
             ["Remembered to hydrate", "forgot the rest"],
             ["Talents include", "misplacing ambition"]
           ],
-          wry: [
+          clever: [
             ["Confidence fluctuates", "like beta software"],
             ["Imposter syndrome", "sent a calendar invite"],
             ["Plan A through F", "currently in group therapy"],
@@ -598,7 +598,7 @@
             ["Roadmap now features", "detours by goblins"],
             ["Confidence patch notes:", "bug fixes pending"]
           ],
-          galaxy: [
+          genius: [
             ["Chaos vector", "approaching theoretical maximum"],
             ["Personal brand", "quantum superposition of cringe"],
             ["Narrative arc", "written by multitasking gremlins"],
@@ -613,7 +613,7 @@
         label: "Nerdy",
         description: "Celebrate the inner engineer, analyst, or lore keeper.",
         captions: {
-          breezy: [
+          simple: [
             ["Bug count rising", "like my caffeine levels"],
             ["Deploying optimism", "behind a feature flag"],
             ["Plot twist:", "documentation actually helpful"],
@@ -621,7 +621,7 @@
             ["Coffee to commit ratio", "reached stability"],
             ["Debugging feelings", "with rubber duck wisdom"]
           ],
-          wry: [
+          clever: [
             ["We refactored the joke", "to O(1) laughter"],
             ["Version control but", "for mood swings"],
             ["Graphing happiness", "found an Easter egg"],
@@ -629,7 +629,7 @@
             ["Cache hit rate", "for random trivia: 100%"],
             ["Refactoring jokes", "kept the Easter eggs"]
           ],
-          galaxy: [
+          genius: [
             ["Entropy of ideas", "stabilized via dad jokes"],
             ["Neural net predicted", "this punchline in beta"],
             ["SELECT *", "FROM punchlines WHERE vibe='meta';"],
@@ -644,7 +644,7 @@
         label: "Wholesome",
         description: "Good vibes, gentle chaos, lots of heart.",
         captions: {
-          breezy: [
+          simple: [
             ["Shared snacks", "shared laughs"],
             ["Kindness queued up", "and always in stock"],
             ["Today's chaos", "comes with extra hugs"],
@@ -652,7 +652,7 @@
             ["Small wins playlist", "set to loop"],
             ["Shared silence", "felt like applause"]
           ],
-          wry: [
+          clever: [
             ["We schedule empathy", "like mission-critical updates"],
             ["Team morale chart", "mostly rainbow gradients"],
             ["Unironically thriving", "with goofy energy"],
@@ -660,7 +660,7 @@
             ["Mission control reports", "hug levels nominal"],
             ["Creative brief:", "deliver joy with sprinkles"]
           ],
-          galaxy: [
+          genius: [
             ["Emotional KPIs", "trending toward stardust"],
             ["We found serotonin", "in the source code comments"],
             ["Wholesome energy", "powered by chaotic good"],
@@ -755,7 +755,7 @@
       if (!humor || !humor.captions) {
         return [];
       }
-      const set = humor.captions[cleverness?.id] || humor.captions.breezy || [];
+      const set = humor.captions[cleverness?.id] || humor.captions.simple || [];
       return Array.isArray(set) ? set : [];
     }
 
