@@ -46,7 +46,7 @@
     header {
       grid-column: 1 / -1;
       display: grid;
-      gap: 6px;
+      gap: 12px;
     }
 
     header h1 {
@@ -56,18 +56,86 @@
       letter-spacing: 0.6px;
     }
 
-    header p {
-      margin: 0;
-      max-width: 58ch;
+    .app-intro {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
       color: rgba(33, 58, 107, 0.82);
-      line-height: 1.45;
-      font-size: clamp(0.9rem, 1.1vw, 1rem);
+      font-size: clamp(0.92rem, 1.1vw, 1rem);
     }
 
-    .controls {
+    .app-intro button {
+      border: none;
+      background: transparent;
+      color: #4f7efa;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: inherit;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .app-intro button:focus-visible {
+      outline: 3px solid rgba(74, 109, 240, 0.35);
+      border-radius: 6px;
+    }
+
+    .app-dialog {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(18, 30, 56, 0.36);
+      padding: 24px;
+      z-index: 1000;
+    }
+
+    .app-dialog[aria-hidden="false"] {
+      display: flex;
+    }
+
+    .app-dialog__content {
+      max-width: min(720px, 90vw);
+      background: #ffffff;
+      border-radius: 18px;
+      padding: clamp(22px, 3vw, 32px);
+      box-shadow: 0 26px 60px rgba(15, 24, 48, 0.28);
       display: grid;
-      gap: clamp(16px, 2.5vw, 26px);
-      align-content: start;
+      gap: 18px;
+    }
+
+    .app-dialog__content h2 {
+      margin: 0;
+      color: #1d2f56;
+      font-size: clamp(1.4rem, 2vw, 1.8rem);
+    }
+
+    .app-dialog__content p {
+      margin: 0;
+      color: #354872;
+      line-height: 1.5;
+    }
+
+    .app-dialog__actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .app-dialog__actions button {
+      background: linear-gradient(135deg, #4f7efa, #5bd6ff);
+      border: none;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(34, 68, 114, 0.22);
+    }
+
+    .app-dialog__actions button:focus-visible {
+      outline: 3px solid rgba(91, 214, 255, 0.35);
     }
 
     label {
@@ -136,32 +204,125 @@
       color: #36509c;
     }
 
-    .selector-note {
-      font-weight: 400;
-      font-size: 0.85rem;
-      color: #5a6a92;
-      line-height: 1.4;
-    }
-
     .genome-summary {
       border-radius: 14px;
-      padding: 16px 18px;
+      padding: clamp(20px, 2.6vw, 28px);
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid rgba(79, 126, 250, 0.2);
       display: grid;
-      gap: 4px;
+      gap: clamp(18px, 2.4vw, 26px);
       box-shadow: 0 10px 24px rgba(27, 60, 122, 0.08);
     }
 
+    .genome-top {
+      display: grid;
+      gap: clamp(12px, 1.6vw, 18px);
+    }
+
     .genome-headline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      row-gap: 12px;
       font-weight: 700;
-      color: #213a6b;
-      letter-spacing: 0.5px;
+      color: #1b2d57;
+      letter-spacing: 0.6px;
+      font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    }
+
+    .genome-headline span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 16px 6px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(79, 126, 250, 0.22), rgba(91, 214, 255, 0.24));
+      box-shadow: 0 6px 14px rgba(27, 60, 122, 0.12);
+      color: #162b58;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 0.9em;
+    }
+
+    .genome-headline span::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #162b58;
+      opacity: 0.6;
+    }
+
+    .genome-toggle {
+      display: none;
+      align-self: flex-start;
+      border: none;
+      background: rgba(79, 126, 250, 0.16);
+      color: #1b2d57;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .genome-toggle:hover {
+      background: rgba(79, 126, 250, 0.22);
+      transform: translateY(-1px);
+    }
+
+    .genome-toggle:focus-visible {
+      outline: 3px solid rgba(74, 109, 240, 0.35);
     }
 
     .genome-detail {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: #46527a;
+      display: grid;
+      gap: clamp(10px, 1.4vw, 16px);
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .genome-detail span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(79, 126, 250, 0.12);
+      color: #2f3f63;
+      font-weight: 500;
+      letter-spacing: 0.15px;
+    }
+
+    .genome-detail span::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4f7efa;
+      flex-shrink: 0;
+    }
+
+    .genome-controls {
+      display: grid;
+      gap: clamp(12px, 1.5vw, 18px);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .genome-controls label {
+      gap: 8px;
+    }
+
+    .genome-controls select {
+      width: 100%;
+    }
+
+    .genome-controls select,
+    .genome-controls label {
+      max-width: 100%;
     }
 
     .inline-actions {
@@ -185,9 +346,9 @@
     }
 
     .inline-actions .genome-summary {
-      flex: 1 1 280px;
-      min-width: 260px;
-      max-width: 520px;
+      flex: 1 1 340px;
+      min-width: 280px;
+      max-width: 620px;
       margin: 0;
     }
 
@@ -262,11 +423,15 @@
       background: rgba(244, 247, 255, 0.82);
       border-radius: 16px;
       border: 1px solid rgba(79, 126, 250, 0.18);
-      padding: 20px 22px;
+      padding: clamp(18px, 2.4vw, 26px);
       display: grid;
       gap: 16px;
-      min-width: 240px;
-      max-width: 320px;
+      grid-column: 1 / -1;
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      justify-self: stretch;
+      box-shadow: 0 12px 28px rgba(27, 60, 122, 0.08);
     }
 
     .feedback-panel h2 {
@@ -288,15 +453,29 @@
 
     #feedbackList {
       margin: 0;
-      padding: 0;
+      padding: 0 6px 26px 0;
       display: grid;
       gap: 12px;
       font-size: 0.9rem;
       color: #36456d;
-      max-height: 200px;
+      max-height: 240px;
       overflow-y: auto;
       list-style: none;
       counter-reset: feedback;
+      position: relative;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(79, 126, 250, 0.6) rgba(244, 247, 255, 0.6);
+    }
+
+    #feedbackList::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 6px;
+      height: 44px;
+      background: linear-gradient(180deg, rgba(244, 247, 255, 0) 0%, rgba(244, 247, 255, 0.92) 60%, rgba(244, 247, 255, 0.98) 100%);
+      pointer-events: none;
     }
 
     #feedbackList li {
@@ -309,6 +488,13 @@
       display: grid;
       gap: 4px;
       line-height: 1.35;
+    }
+
+    .scroll-hint {
+      margin: 0;
+      font-size: 0.78rem;
+      color: rgba(58, 82, 130, 0.76);
+      text-align: center;
     }
 
     #feedbackList li::before {
@@ -372,6 +558,38 @@
         box-shadow: none;
         background: rgba(255, 255, 255, 0.85);
       }
+
+      .genome-controls {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .genome-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .genome-toggle::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+        transition: transform 0.2s ease;
+        margin-top: -2px;
+      }
+
+      .genome-summary.is-collapsed .genome-detail,
+      .genome-summary.is-collapsed .genome-controls {
+        display: none;
+      }
+
+      .genome-summary.is-collapsed .genome-toggle::after {
+        transform: rotate(-135deg);
+        margin-top: 2px;
+      }
     }
   </style>
 </head>
@@ -379,14 +597,33 @@
   <main class="app" role="main">
     <header>
       <h1>Humor Genome Meme Lab</h1>
-      <p>Explore the building blocks of a joke. Pick an image vibe, combine it with a humor style, choose the cleverness level, and watch two memes evolve so you can crown the one that hits.</p>
+      <p class="app-intro">Decode joke chemistry in real time. <button type="button" id="learnMoreBtn">Learn more</button></p>
     </header>
     
     <div class="inline-actions">
       <button type="button" class="secondary" id="shuffleCaptionBtn">Roll new meme pair</button>
-      <div class="genome-summary" aria-live="polite">
-        <div class="genome-headline" id="genomeHeadline"></div>
-        <div class="genome-detail" id="genomeDetail"></div>
+      <div class="genome-summary">
+        <div class="genome-top">
+          <div class="genome-headline" id="genomeHeadline" aria-live="polite"></div>
+          <button type="button" class="genome-toggle" id="genomeToggleBtn" aria-expanded="true" aria-controls="genomeDetail genomeControls">Hide genome details</button>
+          <div class="genome-detail" id="genomeDetail" aria-live="polite"></div>
+        </div>
+        <div class="genome-controls" id="genomeControls" aria-label="Humor Genome selectors">
+          <label>
+            Image vibe
+            <select id="vibeSelect"></select>
+          </label>
+
+          <label>
+            Humor style
+            <select id="humorSelect"></select>
+          </label>
+
+          <label>
+            Cleverness
+            <select id="clevernessSelect"></select>
+          </label>
+        </div>
       </div>
     </div>
 
@@ -412,30 +649,11 @@
       </article>
     </section>
 
-    <section class="controls" aria-label="Humor Genome selectors">
-      <label>
-        Image vibe
-        <select id="vibeSelect"></select>
-        <span class="selector-note" id="vibeNote"></span>
-      </label>
-
-      <label>
-        Humor style
-        <select id="humorSelect"></select>
-        <span class="selector-note" id="humorNote"></span>
-      </label>
-
-      <label>
-        Cleverness
-        <select id="clevernessSelect"></select>
-        <span class="selector-note" id="clevernessNote"></span>
-      </label>
-    </section>
-
     <section class="feedback-panel" aria-label="Feedback capture">
       <h2>Feedback Stream</h2>
       <p id="feedbackStatus">Cast a vote to help train the Humor Genome ranking.</p>
       <ol id="feedbackList"></ol>
+      <p class="scroll-hint" aria-hidden="true">Scroll to explore the latest reactions</p>
     </section>
 
     <footer>
@@ -443,6 +661,17 @@
       <span>Everything runs locally. Nothing is uploaded.</span>
     </footer>
   </main>
+
+  <div class="app-dialog" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="learnMoreTitle">
+    <div class="app-dialog__content">
+      <h2 id="learnMoreTitle">Humor Genome, Explained</h2>
+      <p>Start by picking the vibe that sets your meme’s stage, from reaction shots to surreal visuals. Layer in a humor style—lighthearted, nerdy, chaotic, and beyond—then dial the cleverness to choose how dense the punchline should be. The lab spins up two meme drafts using your genome so you can compare expressions of the same comedic DNA.</p>
+      <p>Roll new matchups, vote on the one that lands hardest, and watch the feedback stream capture each decision. Every pair you evaluate helps refine which combinations resonate and why. When you spot a meme you love, download it, remix it, and keep the experiment running.</p>
+      <div class="app-dialog__actions">
+        <button type="button" id="closeDialogBtn">Close</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const templates = [
@@ -675,11 +904,10 @@
     const vibeSelect = document.getElementById("vibeSelect");
     const humorSelect = document.getElementById("humorSelect");
     const clevernessSelect = document.getElementById("clevernessSelect");
-    const vibeNote = document.getElementById("vibeNote");
-    const humorNote = document.getElementById("humorNote");
-    const clevernessNote = document.getElementById("clevernessNote");
     const genomeHeadline = document.getElementById("genomeHeadline");
     const genomeDetail = document.getElementById("genomeDetail");
+    const genomeSummary = document.querySelector(".genome-summary");
+    const genomeToggleBtn = document.getElementById("genomeToggleBtn");
     const canvasA = document.getElementById("memeCanvasA");
     const canvasB = document.getElementById("memeCanvasB");
     const captionReadoutA = document.getElementById("captionReadoutA");
@@ -690,6 +918,9 @@
     const shuffleButton = document.getElementById("shuffleCaptionBtn");
     const feedbackStatus = document.getElementById("feedbackStatus");
     const feedbackList = document.getElementById("feedbackList");
+    const learnMoreBtn = document.getElementById("learnMoreBtn");
+    const appDialog = document.querySelector(".app-dialog");
+    const closeDialogBtn = document.getElementById("closeDialogBtn");
 
     const ctxA = canvasA.getContext("2d");
     const ctxB = canvasB.getContext("2d");
@@ -703,6 +934,8 @@
     const currentPairs = { A: ["", ""], B: ["", ""] };
     const imageCache = new Map();
     const feedbackLog = [];
+    const mobileGenomeMedia = window.matchMedia("(max-width: 760px)");
+    let genomeCollapsed = false;
 
     function populateSelectors() {
       imageVibes.forEach((vibe) => {
@@ -739,16 +972,11 @@
       return templateMap[randomId] || templates[0];
     }
 
-    function updateSelectorNotes() {
-      vibeNote.textContent = activeVibe?.description || "";
-      humorNote.textContent = activeHumor?.description || "";
-      clevernessNote.textContent = activeCleverness?.description || "";
-    }
-
     function updateGenomeSummary() {
-      genomeHeadline.textContent = `${activeVibe.label} · ${activeHumor.label} · ${activeCleverness.label}`;
+      const headlinePieces = [activeVibe.label, activeHumor.label, activeCleverness.label].filter(Boolean);
+      genomeHeadline.innerHTML = headlinePieces.map((text) => `<span>${text}</span>`).join("");
       const pieces = [activeVibe.description, activeHumor.description, activeCleverness.description].filter(Boolean);
-      genomeDetail.textContent = pieces.join(" — ");
+      genomeDetail.innerHTML = pieces.map((text) => `<span>${text}</span>`).join("");
     }
 
     function getCaptionSet(humor = activeHumor, cleverness = activeCleverness) {
@@ -790,7 +1018,6 @@
         activeTemplate = pickTemplateForVibe(vibe);
       }
       vibeSelect.value = activeVibe.id;
-      updateSelectorNotes();
       updateGenomeSummary();
       loadTemplateImage(activeTemplate.url);
       applyCaptionPairs(false);
@@ -803,7 +1030,6 @@
       }
       activeHumor = found;
       humorSelect.value = activeHumor.id;
-      updateSelectorNotes();
       updateGenomeSummary();
       applyCaptionPairs(forceNew);
     }
@@ -815,7 +1041,6 @@
       }
       activeCleverness = found;
       clevernessSelect.value = activeCleverness.id;
-      updateSelectorNotes();
       updateGenomeSummary();
       applyCaptionPairs(forceNew);
     }
@@ -842,6 +1067,63 @@
         candidate = next?.id || currentId;
       } while (candidate === currentId);
       return candidate;
+    }
+
+    function syncGenomeToggleState() {
+      if (!genomeSummary || !genomeToggleBtn) {
+        return;
+      }
+
+      if (!mobileGenomeMedia.matches) {
+        genomeCollapsed = false;
+        genomeSummary.classList.remove("is-collapsed");
+        genomeToggleBtn.setAttribute("aria-expanded", "true");
+        genomeToggleBtn.textContent = "Hide genome details";
+        return;
+      }
+
+      genomeSummary.classList.toggle("is-collapsed", genomeCollapsed);
+      const expanded = !genomeCollapsed;
+      genomeToggleBtn.setAttribute("aria-expanded", String(expanded));
+      genomeToggleBtn.textContent = expanded ? "Hide genome details" : "Show genome details";
+    }
+
+    function initializeGenomeToggle() {
+      if (!genomeSummary || !genomeToggleBtn) {
+        return;
+      }
+
+      const handleMediaChange = (event) => {
+        genomeCollapsed = event.matches;
+        syncGenomeToggleState();
+      };
+
+      genomeToggleBtn.addEventListener("click", () => {
+        genomeCollapsed = !genomeCollapsed;
+        syncGenomeToggleState();
+      });
+
+      if (mobileGenomeMedia.addEventListener) {
+        mobileGenomeMedia.addEventListener("change", handleMediaChange);
+      } else if (mobileGenomeMedia.addListener) {
+        mobileGenomeMedia.addListener(handleMediaChange);
+      }
+
+      genomeCollapsed = mobileGenomeMedia.matches;
+      syncGenomeToggleState();
+    }
+
+    function toggleDialog(show) {
+      if (!appDialog) {
+        return;
+      }
+      const targetState = Boolean(show);
+      appDialog.setAttribute("aria-hidden", String(!targetState));
+      if (targetState) {
+        closeDialogBtn?.focus({ preventScroll: true });
+      } else {
+        learnMoreBtn?.focus({ preventScroll: true });
+      }
     }
 
     function randomizeSelectors() {
@@ -1122,6 +1404,21 @@
           applyCaptionPairs(true);
         });
       });
+
+      if (learnMoreBtn && closeDialogBtn && appDialog) {
+        learnMoreBtn.addEventListener("click", () => toggleDialog(true));
+        closeDialogBtn.addEventListener("click", () => toggleDialog(false));
+        appDialog.addEventListener("click", (event) => {
+          if (event.target === appDialog) {
+            toggleDialog(false);
+          }
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && appDialog.getAttribute("aria-hidden") === "false") {
+            toggleDialog(false);
+          }
+        });
+      }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -1131,13 +1428,13 @@
       humorSelect.value = activeHumor.id;
       clevernessSelect.value = activeCleverness.id;
 
-      updateSelectorNotes();
       updateGenomeSummary();
 
       loadTemplateImage(activeTemplate.url);
       applyCaptionPairs(true);
 
       setupButtonFeedback();
+      initializeGenomeToggle();
       initializeEventHandlers();
     });
   </script>
