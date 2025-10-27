@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RoastBot Feedback Log</title>
+<style>
+  :root{
+    --bg:linear-gradient(145deg,#12152a,#1a1f3a 55%,#101322);
+    --panel:#171b33;
+    --accent:#7f8aff;
+    --accent-soft:#2d335c;
+    --accent-border:#3d4477;
+    --ink:#f7f8ff;
+    --muted:#98a0c8;
+    --border:#24294b;
+    --chip-bg:rgba(127,138,255,.18);
+    --chip-border:rgba(127,138,255,.35);
+    --glow:0 10px 45px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 "Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;padding-bottom:80px;}
+  header{padding:24px 0 12px;text-align:center}
+  header h1{margin:8px 0 4px;font-size:28px;font-weight:700;letter-spacing:.01em}
+  header p{margin:0;font-size:14px;color:var(--muted)}
+  main{max-width:1100px;margin:0 auto;padding:0 22px}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:28px 26px;box-shadow:var(--glow)}
+  .panelHead{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:26px}
+  .panelHead h2{margin:0;font-size:18px;font-weight:650}
+  .panelActions{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .actionBtn{appearance:none;border:1px solid var(--accent-border);background:var(--accent-soft);color:var(--ink);padding:6px 16px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:.2s background,.2s transform,.2s border-color,.2s box-shadow;box-shadow:0 8px 22px rgba(16,19,34,.35)}
+  .actionBtn:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-1px);box-shadow:0 10px 28px rgba(16,19,34,.45)}
+  .actionBtn:active{transform:translateY(0);box-shadow:0 6px 18px rgba(16,19,34,.4)}
+  .actionBtn:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+  #status{font-size:13px;padding:4px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid var(--accent-border);color:var(--ink);letter-spacing:.01em}
+  #status[data-state="error"]{background:rgba(255,79,107,.12);border-color:rgba(255,79,107,.4);color:#ff97ab}
+  #status[data-state="empty"]{background:rgba(152,160,200,.16);border-color:rgba(152,160,200,.32);color:var(--muted)}
+  .meta{font-size:13px;color:var(--muted);margin-bottom:18px}
+  .channelPicker{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;padding:16px 20px;margin-bottom:22px;border-radius:18px;background:linear-gradient(135deg,rgba(23,27,51,.92),rgba(31,36,66,.92));border:1px solid rgba(61,68,119,.6);box-shadow:0 16px 32px rgba(10,12,24,.45)}
+  .channelPicker .pickerInfo{display:flex;flex-direction:column;gap:4px;min-width:210px}
+  .channelPicker .pickerTitle{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:rgba(152,160,200,.9);font-weight:650}
+  .channelPicker .pickerHint{font-size:14px;color:var(--muted)}
+  .channelSelectWrap{position:relative;display:flex;align-items:center}
+  .channelSelect{appearance:none;background:var(--accent-soft);color:var(--ink);border:1px solid var(--accent-border);border-radius:999px;padding:10px 44px 10px 18px;font-size:14px;font-weight:600;letter-spacing:.01em;cursor:pointer;box-shadow:0 14px 32px rgba(13,16,32,.45);transition:.2s background,.2s border-color,.2s box-shadow,.2s transform;min-width:260px}
+  .channelSelect:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-1px);box-shadow:0 18px 40px rgba(15,18,36,.55)}
+  .channelSelect:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(127,138,255,.32),0 14px 32px rgba(13,16,32,.45)}
+  .channelSelectWrap::after{content:"";position:absolute;pointer-events:none;right:20px;top:50%;width:10px;height:10px;border-right:2px solid rgba(247,248,255,.8);border-bottom:2px solid rgba(247,248,255,.8);transform:translateY(-65%) rotate(45deg);opacity:.85;transition:.2s opacity}
+  .channelSelectWrap:hover::after,
+  .channelSelectWrap:focus-within::after{opacity:1}
+  .logList{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+  .entry{display:flex;flex-direction:column;gap:12px;padding:18px 20px;border-radius:16px;background:rgba(22,27,50,.85);border:1px solid rgba(60,68,110,.6);box-shadow:0 8px 26px rgba(9,11,20,.35);transition:.2s transform,.2s border-color}
+  .entry:hover{transform:translateY(-2px);border-color:rgba(127,138,255,.55)}
+  .entryHead{display:flex;align-items:flex-start;gap:14px}
+  .entryEmoji{width:46px;height:46px;border-radius:50%;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:24px;border:1px solid var(--accent-border);flex-shrink:0}
+  .entryTitle{display:flex;flex-direction:column;gap:4px}
+  .entryTitle time{font-size:13px;color:var(--muted);letter-spacing:.01em}
+  .entryTitle .reactor{font-size:15px}
+  .entryTitle .reactor strong{font-weight:650}
+  .entryRoast{margin:0;font-size:16px;font-weight:520;line-height:1.55;letter-spacing:.01em}
+  .entryMeta{display:flex;flex-wrap:wrap;gap:16px 28px;padding-top:8px;border-top:1px solid rgba(44,49,80,.8);font-size:13px;color:var(--muted)}
+  .entryMeta .label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;color:rgba(152,160,200,.9)}
+  .entryMeta .value{font-size:13px;color:var(--ink);word-break:break-word}
+  .attrChips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .chip{padding:4px 10px;border-radius:999px;background:var(--chip-bg);border:1px solid var(--chip-border);font-size:12px;color:var(--ink);letter-spacing:.05em;text-transform:uppercase}
+  .emptyState{padding:48px 0;text-align:center;color:var(--muted)}
+  footer{margin-top:42px;text-align:center;font-size:12px;color:var(--muted)}
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media (max-width:640px){
+    header{padding:20px 0 10px}
+    header h1{font-size:24px}
+    .panel{padding:22px 18px;border-radius:16px}
+    .channelPicker{padding:14px 16px;gap:14px}
+    .channelPicker .pickerInfo{min-width:auto}
+    .entry{padding:16px}
+    .entryHead{gap:12px}
+    .entryEmoji{width:38px;height:38px;font-size:20px}
+    .entryRoast{font-size:15px}
+    .entryMeta{flex-direction:column;gap:10px;padding-top:10px}
+    .panelActions{width:100%;margin-left:0;justify-content:flex-start}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>RoastBot Feedback Log</h1>
+  <p>Live look at the latest community reactions. Auto-refreshing, capped to the 50 most recent responses.</p>
+</header>
+<main>
+  <section class="panel" aria-labelledby="panel-title">
+    <div class="panelHead">
+      <h2 id="panel-title">Latest Roast Reactions</h2>
+      <div class="panelActions">
+        <button id="downloadTsv" class="actionBtn" type="button" disabled>Export TSV</button>
+        <span id="status" data-state="loading">Loading…</span>
+      </div>
+    </div>
+    <div class="channelPicker" role="group" aria-label="Channel filter">
+      <div class="pickerInfo">
+        <label class="pickerTitle" for="channelSelect">Channel Filter</label>
+        <div class="pickerHint">Select which lounge's roasts to review.</div>
+      </div>
+      <div class="channelSelectWrap">
+        <select id="channelSelect" class="channelSelect">
+          <option value="1420566710506750042" selected>1420566710506750042 (roast-me)</option>
+          <option value="1431788387001569280">1431788387001569280 (roast-me-2)</option>
+        </select>
+      </div>
+    </div>
+    <ol id="logList" class="logList" aria-live="polite" aria-busy="true"></ol>
+    <div id="emptyState" class="emptyState" hidden>No feedback collected yet.</div>
+  </section>
+</main>
+<footer>
+  Built for the roast crew • Data refreshes in real time via Firestore
+</footer>
+
+<script type="module">
+  import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+  const DEFAULT_FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDMo5gtTYOJLormp09ctazElb6kQl8O_7U",
+    authDomain: "roastbot-dev-1.firebaseapp.com",
+    projectId: "roastbot-dev-1",
+    storageBucket: "roastbot-dev-1.firebasestorage.app",
+    messagingSenderId: "79171523011",
+    appId: "1:79171523011:web:666a77ac453fea8e0bed76",
+    measurementId: "G-3LJN7WPTRV"
+  };
+
+  const params = new URLSearchParams(window.location.search);
+  const FIRESTORE_COLLECTION = (
+    params.get("collection")
+    ?? window.ROAST_FEEDBACK_COLLECTION
+    ?? window.roastFeedbackCollection
+    ?? "roastFeedback"
+  ).trim() || "roastFeedback";
+
+  const firebaseConfig = typeof window !== "undefined"
+    ? (window.firebaseConfig ?? window._firebaseConfig ?? DEFAULT_FIREBASE_CONFIG)
+    : DEFAULT_FIREBASE_CONFIG;
+
+  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const statusEl = document.getElementById("status");
+  const listEl = document.getElementById("logList");
+  const emptyEl = document.getElementById("emptyState");
+  const downloadButton = document.getElementById("downloadTsv");
+
+  let latestEntries = [];
+  let unsubscribe = null;
+
+  const timeFormatter = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+
+  const channelSelect = document.getElementById("channelSelect");
+  const initialChannelParam = params.get("channelId") ?? params.get("channel");
+  const resolvedInitialChannel = (typeof initialChannelParam === "string" && initialChannelParam.trim())
+    || channelSelect?.value
+    || "1420566710506750042";
+
+  if(channelSelect){
+    const matchedOption = Array.from(channelSelect.options).find((opt) => opt.value === resolvedInitialChannel);
+    if(matchedOption){
+      channelSelect.value = matchedOption.value;
+    }else if(channelSelect.options.length){
+      channelSelect.value = channelSelect.options[0].value;
+    }
+  }
+
+  let activeChannelId = channelSelect?.value || resolvedInitialChannel;
+
+  setStatus("Loading…", "loading", true);
+
+  subscribeToChannel(activeChannelId);
+
+  if(channelSelect){
+    channelSelect.addEventListener("change", (event) => {
+      activeChannelId = event.target.value;
+      subscribeToChannel(activeChannelId);
+    });
+  }
+
+  function subscribeToChannel(channelId){
+    const trimmedChannel = (channelId ?? "").trim();
+
+    if(typeof unsubscribe === "function"){
+      unsubscribe();
+    }
+    unsubscribe = null;
+
+    latestEntries = [];
+    listEl.innerHTML = "";
+    emptyEl.hidden = true;
+    listEl.setAttribute("aria-busy", "true");
+    if(downloadButton){
+      downloadButton.disabled = true;
+    }
+    setStatus("Loading…", "loading", true);
+
+    const baseCollection = collection(db, FIRESTORE_COLLECTION);
+    const feedbackQuery = trimmedChannel
+      ? query(
+          baseCollection,
+          where("channelId", "==", trimmedChannel),
+          orderBy("createdAt", "desc"),
+          limit(50)
+        )
+      : query(
+          baseCollection,
+          orderBy("createdAt", "desc"),
+          limit(50)
+        );
+
+    unsubscribe = onSnapshot(
+      feedbackQuery,
+      (snapshot) => {
+        const entries = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        latestEntries = entries;
+        renderEntries(entries);
+      },
+      (err) => {
+        console.error("Failed to load feedback:", err);
+        setStatus("Failed to load feedback — check console", "error", false);
+      }
+    );
+  }
+
+  function renderEntries(entries){
+    listEl.innerHTML = "";
+    const hasEntries = entries.length > 0;
+    listEl.setAttribute("aria-busy", hasEntries ? "false" : "true");
+    emptyEl.hidden = hasEntries;
+    if(downloadButton){
+      downloadButton.disabled = !hasEntries;
+    }
+
+    if(!hasEntries){
+      setStatus("No feedback yet", "empty", false);
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    for(const entry of entries){
+      fragment.appendChild(renderEntry(entry));
+    }
+    listEl.appendChild(fragment);
+
+    const countLabel = entries.length === 1 ? "entry" : "entries";
+    setStatus(`${entries.length} ${countLabel}`, "", false);
+  }
+
+  function renderEntry(entry){
+    const li = document.createElement("li");
+    li.className = "entry";
+
+    const head = document.createElement("div");
+    head.className = "entryHead";
+
+    const emoji = document.createElement("div");
+    emoji.className = "entryEmoji";
+    emoji.textContent = entry.feedbackEmoji || "—";
+    head.appendChild(emoji);
+
+    const title = document.createElement("div");
+    title.className = "entryTitle";
+
+    const timestamp = document.createElement("time");
+    const createdAt = normalizeDate(entry.createdAt);
+    if(createdAt){
+      timestamp.dateTime = createdAt.toISOString();
+      timestamp.textContent = timeFormatter.format(createdAt);
+    }else{
+      timestamp.textContent = "Date unavailable";
+    }
+    title.appendChild(timestamp);
+
+    const reactor = document.createElement("div");
+    reactor.className = "reactor";
+    reactor.appendChild(document.createTextNode("Reacted by "));
+    const reactorName = displayName(
+      entry.feedbackUserDisplayName,
+      entry.feedbackUserTag,
+      entry.feedbackUserId
+    );
+    const strong = document.createElement("strong");
+    strong.textContent = reactorName;
+    reactor.appendChild(strong);
+    title.appendChild(reactor);
+
+    head.appendChild(title);
+    li.appendChild(head);
+
+    const roast = document.createElement("p");
+    roast.className = "entryRoast";
+    roast.textContent = entry.roastText || entry.roastMessageContent || "—";
+    li.appendChild(roast);
+
+    const meta = document.createElement("div");
+    meta.className = "entryMeta";
+
+    meta.appendChild(metaColumn("Roast Target", displayName(
+      entry.roastedUserDisplayName,
+      entry.roastedUserTag,
+      entry.roastedUserId
+    )));
+
+    meta.appendChild(metaColumn("Roast Message ID", entry.roastMessageId || "—"));
+    meta.appendChild(metaColumn("Source Message ID", entry.sourceMessageId || "—"));
+
+    if(entry.channelId){
+      meta.appendChild(metaColumn("Channel ID", entry.channelId));
+    }
+    if(entry.guildId){
+      meta.appendChild(metaColumn("Guild ID", entry.guildId));
+    }
+
+    if(Array.isArray(entry.attributes) && entry.attributes.length){
+      meta.appendChild(attributeColumn(entry.attributes));
+    }
+
+    li.appendChild(meta);
+    return li;
+  }
+
+  function metaColumn(label, value){
+    const wrap = document.createElement("div");
+    const labelEl = document.createElement("span");
+    labelEl.className = "label";
+    labelEl.textContent = label;
+    wrap.appendChild(labelEl);
+
+    const valueEl = document.createElement("span");
+    valueEl.className = "value";
+    valueEl.textContent = value;
+    wrap.appendChild(valueEl);
+    return wrap;
+  }
+
+  function attributeColumn(attributes){
+    const wrap = document.createElement("div");
+    const labelEl = document.createElement("span");
+    labelEl.className = "label";
+    labelEl.textContent = "Attributes";
+    wrap.appendChild(labelEl);
+
+    const chipWrap = document.createElement("div");
+    chipWrap.className = "attrChips";
+    for(const item of attributes){
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = item && item.label && item.value
+        ? `${item.label}: ${item.value}`
+        : (item?.label || item?.value || "—");
+      chipWrap.appendChild(chip);
+    }
+    wrap.appendChild(chipWrap);
+    return wrap;
+  }
+
+  function displayName(displayName, tag, fallbackId){
+    const name = displayName || tag;
+    if(name){
+      if(displayName && tag && displayName !== tag){
+        return `${displayName} (${tag})`;
+      }
+      return name;
+    }
+    return fallbackId ? `ID ${fallbackId}` : "Unknown";
+  }
+
+  function normalizeDate(raw){
+    if(!raw) return null;
+    if(raw instanceof Date) return raw;
+    if(typeof raw.toDate === "function"){
+      try{
+        return raw.toDate();
+      }catch{
+        return null;
+      }
+    }
+    const date = new Date(raw);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  function setStatus(text, state = "", busy = false){
+    statusEl.textContent = text;
+    if(state){
+      statusEl.dataset.state = state;
+    }else{
+      delete statusEl.dataset.state;
+    }
+    statusEl.setAttribute("aria-live", "polite");
+    listEl.setAttribute("aria-busy", busy ? "true" : "false");
+  }
+
+  if(downloadButton){
+    downloadButton.addEventListener("click", () => {
+      if(!latestEntries.length){
+        window.alert("No feedback entries available yet.");
+        return;
+      }
+      const tsv = buildTsv(latestEntries);
+      const blob = new Blob([tsv], { type: "text/tab-separated-values" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+      link.href = url;
+      link.download = `roast-feedback-${stamp}.tsv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  function buildTsv(entries){
+    const columns = [
+      { header: "Created At (ISO)", getter: (entry) => {
+        const date = normalizeDate(entry.createdAt);
+        return date ? date.toISOString() : "";
+      }},
+      { header: "Feedback Emoji", getter: (entry) => entry.feedbackEmoji || "" },
+      { header: "Feedback User", getter: (entry) => displayName(
+          entry.feedbackUserDisplayName,
+          entry.feedbackUserTag,
+          entry.feedbackUserId
+        ) },
+      { header: "Feedback User ID", getter: (entry) => entry.feedbackUserId || "" },
+      { header: "Feedback User Tag", getter: (entry) => entry.feedbackUserTag || "" },
+      { header: "Roast Text", getter: (entry) => entry.roastText || entry.roastMessageContent || "" },
+      { header: "Roast Message ID", getter: (entry) => entry.roastMessageId || "" },
+      { header: "Roast Target", getter: (entry) => displayName(
+          entry.roastedUserDisplayName,
+          entry.roastedUserTag,
+          entry.roastedUserId
+        ) },
+      { header: "Roast Target ID", getter: (entry) => entry.roastedUserId || "" },
+      { header: "Roast Target Tag", getter: (entry) => entry.roastedUserTag || "" },
+      { header: "Source Message ID", getter: (entry) => entry.sourceMessageId || "" },
+      { header: "Channel ID", getter: (entry) => entry.channelId || "" },
+      { header: "Guild ID", getter: (entry) => entry.guildId || "" },
+      { header: "Attributes", getter: (entry) => {
+        if(!Array.isArray(entry.attributes) || !entry.attributes.length){
+          return "";
+        }
+        return entry.attributes
+          .map((item) => {
+            if(item && item.label && item.value){
+              return `${item.label}: ${item.value}`;
+            }
+            return item?.label || item?.value || "";
+          })
+          .filter(Boolean)
+          .join("; ");
+      }}
+    ];
+
+    const headerLine = columns.map((col) => escapeTsvCell(col.header)).join("\t");
+    const lines = entries.map((entry) =>
+      columns.map((col) => escapeTsvCell(col.getter(entry))).join("\t")
+    );
+    return [headerLine, ...lines].join("\n");
+  }
+
+  function escapeTsvCell(value){
+    if(value === null || value === undefined){
+      return "";
+    }
+    return String(value).replace(/[\t\n\r]/g, " ").trim();
+  }
+</script>
+</body>
+</html>

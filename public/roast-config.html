@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>RoastBot Config</title>
+<style>
+  :root{
+    --bg:#f9fafc; --panel:#ffffff; --ink:#1c1f26; --muted:#626a7a;
+    --rail:#e9ecf6; --border:#d6dae8; --chip:#eef1fb; --chip-on:#cfd7ff; --chip-hov:#e3e7ff;
+    --accent:#3f62ff; --overlay:rgba(240,243,255,.85);
+  }
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+  header{padding:14px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:5}
+  h1{font-size:20px;margin:0;font-weight:650}
+  .sub{color:var(--muted);font-size:13px}
+  main{max-width:980px;margin:28px auto;padding:0 20px 60px}
+  .pageMeta{max-width:980px;margin:-20px auto 40px;padding:0 20px;color:var(--muted);font-size:13px;text-align:right}
+  .pageMeta time{color:var(--ink);font-weight:600}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 6px 20px rgba(0,0,0,.05)}
+  .panel h2{margin:4px 0 10px;font-size:16px}
+  .row{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px dashed var(--border)}
+  .row:first-of-type{border-top:0}
+  .label{min-width:200px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .info{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#f0f3ff;border:1px solid var(--border);cursor:pointer;color:#445;margin-left:3px;font-size:12px}
+  .rail{display:flex;overflow:hidden;border-radius:10px;border:1px solid var(--border);background:var(--rail)}
+  .opt{appearance:none;border:0;background:transparent;color:#1f2330;padding:9px 14px;cursor:pointer;transition:.15s;font-size:14px}
+  .opt:not(:last-child){border-right:1px solid var(--border)}
+  .opt:hover{background:var(--chip-hov)}
+  .opt[aria-checked="true"]{background:var(--chip-on);color:#000;font-weight:650}
+  .promptWrap{display:none;margin:16px 0}
+  .promptBox{background:#f5f7ff;border:1px solid var(--border);border-radius:10px;padding:12px}
+  .promptBox pre{margin:0;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;color:#222}
+  .pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:var(--overlay);z-index:50}
+  .popInner{max-width:560px;width:92%;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px}
+  .popInner h3{margin:0 0 6px;font-size:16px}
+  .popInner p{margin:6px 0;color:#2b2f3e}
+  .popInner ul{margin:6px 0 0 18px;padding:0}
+  .popInner li{margin:4px 0}
+
+  @media (max-width:640px){
+    body{font-size:15px}
+    header{flex-direction:column;align-items:flex-start;gap:6px;padding:12px 16px}
+    main{margin:18px auto;padding:0 16px 56px}
+    .panel{padding:16px;border-radius:12px}
+    .row{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 0}
+    .label{min-width:0;font-size:15px}
+    .rail{width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+    .opt{flex:0 0 auto;padding:10px 14px;font-size:15px}
+    .opt:not(:last-child){border-right:1px solid var(--border)}
+    .pageMeta{margin:18px auto 32px;text-align:left;padding:0 16px}
+  }
+</style>
+
+</head>
+<body>
+<header>
+  <div style="font-size:22px">🎛️</div>
+  <h1>RoastBot Configuration</h1>
+</header>
+<main>
+  <!-- Live prompt (admin) -->
+  <div id="promptWrap" class="promptWrap">
+    <div class="promptBox"><pre id="promptText"></pre></div>
+  </div>
+
+  <section class="panel">
+    <h2>Controls</h2>
+    <!-- Persona (unique set appears only here) -->
+    <div class="row seg" data-key="persona">
+      <div class="label">Persona <button class="info" data-info="persona" title="What tone/voice to speak in">i</button></div>
+      <div class="rail">
+        <button class="opt" data-val="polite" aria-checked="true">Polite Stranger</button>
+        <button class="opt" data-val="bitter">Bitter Comic</button>
+        <button class="opt" data-val="aunt">Divorced Aunt</button>
+        <button class="opt" data-val="grandpa">Dementia Grandpa</button>
+      </div>
+    </div>
+    <!-- Aggression -->
+    <div class="row seg" data-key="aggression">
+      <div class="label">Aggression <button class="info" data-info="aggression">i</button></div>
+      <div class="rail">
+        <button class="opt" data-val="1">Low</button>
+        <button class="opt" data-val="2" aria-checked="true">Medium</button>
+        <button class="opt" data-val="3">High</button>
+        <button class="opt" data-val="4">Max</button>
+      </div>
+    </div>
+    <!-- Edginess -->
+    <div class="row seg" data-key="edginess">
+      <div class="label">Edginess <button class="info" data-info="edginess">i</button></div>
+      <div class="rail">
+        <button class="opt" data-val="1">Playful</button>
+        <button class="opt" data-val="2" aria-checked="true">Provoc.</button>
+        <button class="opt" data-val="3">Dark</button>
+        <button class="opt" data-val="4">Risky</button>
+      </div>
+    </div>
+    <!-- Delivery -->
+    <div class="row seg" data-key="delivery">
+      <div class="label">Delivery Style <button class="info" data-info="delivery">i</button></div>
+      <div class="rail">
+        <button class="opt" data-val="analytical">Analytical wit</button>
+        <button class="opt" data-val="mixed" aria-checked="true">Mixed</button>
+        <button class="opt" data-val="instinctive">Instinctive comic</button>
+      </div>
+    </div>
+    <!-- Surprise Factor -->
+    <div class="row seg" data-key="surprise">
+      <div class="label">Surprise Factor <button class="info" data-info="surprise">i</button></div>
+      <div class="rail">
+        <button class="opt" data-val="low">Predictable</button>
+        <button class="opt" data-val="med" aria-checked="true">Punchy</button>
+        <button class="opt" data-val="high">Chaotic funny</button>
+      </div>
+    </div>
+    <!-- Benign Violation -->
+    <div class="row seg" data-key="violation">
+      <div class="label">Benign Violation <button class="info" data-info="violation">i</button></div>
+      <div class="rail">
+        <button class="opt" data-val="safe">Safe tease</button>
+        <button class="opt" data-val="sweet" aria-checked="true">Sweet spot</button>
+        <button class="opt" data-val="edge">Close to the line</button>
+      </div>
+    </div>
+    <!-- Blend Depth -->
+    <div class="row seg" data-key="blend">
+      <div class="label">Conceptual Blend Depth <button class="info" data-info="blend">i</button></div>
+      <div class="rail">
+        <button class="opt" data-val="literal">Literal</button>
+        <button class="opt" data-val="smart" aria-checked="true">Smart-ass</button>
+        <button class="opt" data-val="absurd">Absurd mashup</button>
+      </div>
+    </div>
+    <!-- Self-Awareness -->
+    <div class="row seg" data-key="selfaware">
+      <div class="label">Self-Awareness <button class="info" data-info="selfaware">i</button></div>
+      <div class="rail">
+        <button class="opt" data-val="straight" aria-checked="true">Straight-faced</button>
+        <button class="opt" data-val="knows">Knows it’s joking</button>
+        <button class="opt" data-val="overaware">Overaware meta</button>
+      </div>
+    </div>
+
+  </section>
+</main>
+<footer class="pageMeta">
+  <span>Last updated: <time id="lastUpdated" datetime="">—</time></span>
+</footer>
+
+<!-- Info Popover -->
+<div id="pop" class="pop" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="popInner">
+    <h3 id="popTitle">Info</h3>
+    <div id="popBody"><p>…</p></div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const lastUpdatedEl = $('#lastUpdated');
+  const LAST_UPDATED_FORMATTER = new Intl.DateTimeFormat(undefined, {dateStyle:'medium', timeStyle:'short'});
+
+  function setLastUpdatedDisplay(value){
+    if(!lastUpdatedEl) return;
+    const fallback = '—';
+    if(!value){
+      lastUpdatedEl.textContent = fallback;
+      lastUpdatedEl.removeAttribute('datetime');
+      return;
+    }
+    const date = value instanceof Date
+      ? value
+      : (typeof value?.toDate === 'function' ? value.toDate() : new Date(value));
+    if(!(date instanceof Date) || Number.isNaN(date.getTime())){
+      lastUpdatedEl.textContent = fallback;
+      lastUpdatedEl.removeAttribute('datetime');
+      return;
+    }
+    lastUpdatedEl.textContent = LAST_UPDATED_FORMATTER.format(date);
+    lastUpdatedEl.setAttribute('datetime', date.toISOString());
+  }
+  setLastUpdatedDisplay(null);
+
+  // Core prompt (Stefan-inspired)
+  const userText = window.userText ?? '';
+  const BASE_PROMPT = [
+    "You’re a sharp roast comic. Roast the author’s message with witty, conversational humor.",
+    "Never start with meta phrases like “That line reads like…” or “That sounds like…”. Begin naturally, like you’re firing back in a live roast.",
+    "Favor pattern + surprise over explanation. Avoid repeating the author’s wording. Keep it punchy (1–2 sentences)."
+  ].join(' ');
+
+  const DEFAULT_STATE = {
+    persona:'polite',
+    aggression:2,
+    edginess:2,
+    delivery:'mixed',
+    surprise:'med',
+    violation:'sweet',
+    blend:'smart',
+    selfaware:'straight'
+  };
+  const state = {...DEFAULT_STATE};
+  const NUMERIC_KEYS = new Set(['aggression','edginess']);
+
+  const DEFAULT_FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDfX4mB3cPHjeVV0JS7vgiFYHqvNH-4YV0",
+    authDomain: "humorgenome-1.firebaseapp.com",
+    projectId: "humorgenome-1",
+    storageBucket: "humorgenome-1.firebasestorage.app",
+    messagingSenderId: "304961321616",
+    appId: "1:304961321616:web:dba285c7b89be3db583615"
+  };
+
+  const firebaseConfig = typeof window !== 'undefined'
+    ? (window.firebaseConfig ?? window._firebaseConfig ?? DEFAULT_FIREBASE_CONFIG)
+    : DEFAULT_FIREBASE_CONFIG;
+  let firestoreDocRef = null;
+  let saveTimeoutId = null;
+
+  // Descriptive guidance appended to prompt (not to be echoed)
+  const HINTS = {
+    persona:{
+      polite:'Use a courteous, lightly snarky voice.',
+      bitter:'Use a jaded club-comic voice with cutting rhythm.',
+      aunt:'Use a blunt, saucy, “seen-it-all” voice.',
+      grandpa:'Use wandering, off-kilter non-sequiturs with gentle bite.'
+    },
+    aggression:{1:'Keep tone playful.',2:'Keep tone roasty but fair.',3:'Hit hard with confidence.',4:'Go max intensity without breaking safety rules.'},
+    edginess:{1:'Stay playful; avoid taboo tension.',2:'Allow provocative tension.',3:'Allow dark irony.',4:'Allow risky tension (no hate/trauma).'},
+    delivery:{analytical:'Prefer structured jokes with clear setup→sting.',mixed:'Blend structure with riffy crowd-work energy.',instinctive:'Favor instinctive riffs and snap pivots.'},
+    surprise:{low:'Keep structure predictable.',med:'Allow sharp surprise turns.',high:'Allow wild structure variations and big swerves.'},
+    violation:{safe:'Keep it clearly benign.',sweet:'Aim for benign-violation sweet spot.',edge:'Push close to the line without crossing safety.'},
+    blend:{literal:'Minimize analogy; keep it literal.',smart:'Use neat conceptual mappings.',absurd:'Create vivid absurd mashups if it helps the joke.'},
+    selfaware:{straight:'Avoid meta/self-aware remarks.',knows:'Lean into confident joke mode (it knows it’s humor).',overaware:'Allow playful self-reference without derailing.'}
+  };
+
+  function wireSegments(){
+    $$('.row.seg').forEach(seg=>{
+      seg.querySelectorAll('.opt').forEach(opt=>{
+        opt.addEventListener('click', ()=>{
+          // state
+          const key = seg.dataset.key;
+          const raw = opt.dataset.val;
+          const nextVal = NUMERIC_KEYS.has(key) ? Number(raw) : raw;
+          if(state[key] === nextVal) return;
+          state[key] = nextVal;
+          applyStateToUI();
+          scheduleSave();
+        });
+      });
+    });
+  }
+
+  // Info popover
+  const INFO = {
+    persona:`<p>Sets the comic “voice” — phrasing style, rhythm, and emotional flavor. Think of it as who’s holding the mic.</p>
+      <ul>
+        <li><b>Polite Stranger:</b> Light sarcasm with courteous phrasing. Jabs land softly.</li>
+        <li><b>Bitter Comic:</b> Club-proven cynic; quick rhythm, eye-roll timing, bite in the punch.</li>
+        <li><b>Divorced Aunt:</b> Wine-fueled bluntness, gossip-tone delivery, warm but fearless.</li>
+        <li><b>Dementia Grandpa:</b> Rambling, surreal tangents that somehow connect back to a punch.</li>
+      </ul>`,
+
+    aggression:`<p>Controls roast intensity — how hard the joke “hits.” Higher levels lean into ridicule; lower ones stay playful.</p>
+      <ul>
+        <li><b>Low:</b> Gentle tease (“Aww, that’s cute.”)</li>
+        <li><b>Medium:</b> Balanced roast-show tone — firm but funny.</li>
+        <li><b>High:</b> Confident takedown with sharper edges, still under safety rails.</li>
+        <li><b>Max:</b> Full-blast insult energy; only safety guardrails remain.</li>
+      </ul>`,
+
+    edginess:`<p>How far the joke leans into taboo or tension. Think of it as <i>how much social risk</i> the humor takes to get the laugh.</p>
+      <ul>
+        <li><b>Playful:</b> Family-friendly ribbing.</li>
+        <li><b>Provocative:</b> Mild tension, irony, or mischief.</li>
+        <li><b>Dark:</b> Sarcasm, cynicism, or bleak contrast.</li>
+        <li><b>Risky:</b> Flirts with shock — never cruelty or hate.</li>
+      </ul>`,
+
+    delivery:`<p>Shapes how the bot “performs” the roast — tight setup or spontaneous riff. Affects pacing, rhythm, and surprise timing.</p>
+      <ul>
+        <li><b>Analytical Wit:</b> Clean, structured joke logic.</li>
+        <li><b>Mixed:</b> Balances crafted structure with improv-style add-ons.</li>
+        <li><b>Instinctive Comic:</b> Loose, reactive delivery; crowd-work feel.</li>
+      </ul>`,
+
+    surprise:`<p>Controls unpredictability — the twist that makes the laugh pop. Higher = more left-turns and incongruity.</p>
+      <ul>
+        <li><b>Predictable:</b> Smooth and safe punchline flow.</li>
+        <li><b>Punchy:</b> Clear setup → twist rhythm (classic laughs).</li>
+        <li><b>Chaotic Funny:</b> Wild pivots, absurd or surreal turns.</li>
+      </ul>`,
+
+    violation:`<p>How close the roast gets to “crossing the line.” Humor thrives in this <i>benign violation zone</i> — breaking norms safely.</p>
+      <ul>
+        <li><b>Safe Tease:</b> No offense risk, friendly tone.</li>
+        <li><b>Sweet Spot:</b> Mild shock + quick release = laughter.</li>
+        <li><b>Close to the Line:</b> Edgy, bold, flirts with taboo but stays funny.</li>
+      </ul>`,
+
+    blend:`<p>Degree of conceptual mashup — how the bot combines unrelated ideas to form clever analogies or absurd blends.</p>
+      <ul>
+        <li><b>Literal:</b> Direct jokes on the surface meaning.</li>
+        <li><b>Smart-ass:</b> Uses analogies and parallel logic.</li>
+        <li><b>Absurd Mashup:</b> Merges far-apart worlds for surreal punchlines.</li>
+      </ul>`,
+
+    selfaware:`<p>How consciously the bot acts like it “knows it’s joking.” Higher settings add meta-humor and wink at the audience.</p>
+      <ul>
+        <li><b>Straight-faced:</b> Plays it totally sincere.</li>
+        <li><b>Knows It’s Joking:</b> Subtle wink to the reader.</li>
+        <li><b>Overaware Meta:</b> Breaks the fourth wall; jokes about its own joke-making.</li>
+      </ul>`
+  };
+
+
+  function wireInfo(){
+    $$('.info').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const key = btn.dataset.info;
+        $('#popTitle').textContent = key[0].toUpperCase()+key.slice(1);
+        $('#popBody').innerHTML = INFO[key] || '<p>No description.</p>';
+        openPop();
+      });
+    });
+    $('#pop').addEventListener('click', (e)=>{
+      if(e.target.id==='pop'){ closePop(); }
+    });
+  }
+  function openPop(){ const p=$('#pop'); p.style.display='flex'; p.setAttribute('aria-hidden','false'); }
+  function closePop(){ const p=$('#pop'); p.style.display='none'; p.setAttribute('aria-hidden','true'); }
+
+  // Admin prompt view
+  function adminMode(){
+    const params = new URLSearchParams(location.search);
+    return params.get('prompt') === 'true';
+  }
+
+  function applyStateToUI(){
+    $$('.row.seg').forEach(seg=>{
+      const key = seg.dataset.key;
+      const options = Array.from(seg.querySelectorAll('.opt'));
+      const desired = String(
+        options.some(opt=>opt.dataset.val === String(state[key]))
+          ? state[key]
+          : (state[key] = DEFAULT_STATE[key])
+      );
+      options.forEach(opt=>{
+        const isActive = opt.dataset.val === desired;
+        opt.setAttribute('aria-checked', isActive ? 'true' : 'false');
+      });
+    });
+    maybeRenderPrompt();
+  }
+
+  function buildHintLines(){
+    const parts = [
+      HINTS.persona[state.persona],
+      HINTS.delivery[state.delivery],
+      HINTS.aggression[state.aggression],
+      HINTS.edginess[state.edginess],
+      HINTS.surprise[state.surprise],
+      HINTS.violation[state.violation],
+      HINTS.blend[state.blend],
+      HINTS.selfaware[state.selfaware]
+    ].filter(Boolean);
+    return parts.length ? `Parameter hints (do not quote): ${parts.join(' ')}` : '';
+  }
+
+  function buildPrompt(){
+    const hints = buildHintLines();
+    const hintSegment = hints ? ` ${hints}` : '';
+    return `${BASE_PROMPT}${hintSegment} Message to roast: ${userText}`;
+  }
+
+  function maybeRenderPrompt(){
+    if(!adminMode()) return;
+    const wrap = $('#promptWrap');
+    wrap.style.display = 'block';
+    $('#promptText').textContent = buildPrompt();
+  }
+
+  function normalizeStateValue(key, value){
+    if(value === undefined || value === null) return DEFAULT_STATE[key];
+    if(NUMERIC_KEYS.has(key)){
+      const num = Number(value);
+      return Number.isFinite(num) ? num : DEFAULT_STATE[key];
+    }
+    return String(value);
+  }
+
+  async function loadRemoteState(){
+    if(!firestoreDocRef) return;
+    try{
+      const snap = await getDoc(firestoreDocRef);
+      if(snap.exists()){
+        const data = snap.data();
+        Object.keys(state).forEach(key=>{
+          if(Object.prototype.hasOwnProperty.call(data, key)){
+            state[key] = normalizeStateValue(key, data[key]);
+          }
+        });
+        applyStateToUI();
+        setLastUpdatedDisplay(data.lastUpdated ?? null);
+      }else{
+        await setDoc(firestoreDocRef, {...state, lastUpdated: serverTimestamp()});
+        setLastUpdatedDisplay(new Date());
+      }
+    }catch(err){
+      console.error('Failed to load roast parameters from Firestore', err);
+    }
+  }
+
+  const SAVE_DELAY_MS = 350;
+  function scheduleSave(){
+    if(!firestoreDocRef) return;
+    clearTimeout(saveTimeoutId);
+    saveTimeoutId = setTimeout(async ()=>{
+      try{
+        await setDoc(firestoreDocRef, {...state, lastUpdated: serverTimestamp()}, {merge:true});
+        setLastUpdatedDisplay(new Date());
+      }catch(err){
+        console.error('Failed to persist roast parameters to Firestore', err);
+      }
+    }, SAVE_DELAY_MS);
+  }
+
+  async function setupFirestore(){
+    if(!firebaseConfig){
+      console.warn('Firebase config not found on window; skipping Firestore sync.');
+      return;
+    }
+    try{
+      const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      firestoreDocRef = doc(db, 'humorgenome', 'roastParameters');
+      await loadRemoteState();
+    }catch(err){
+      console.error('Failed to initialize Firestore', err);
+      firestoreDocRef = null;
+    }
+  }
+
+  // Init
+  wireSegments();
+  wireInfo();
+  applyStateToUI();
+  setupFirestore();
+</script>
+</body>
+</html>

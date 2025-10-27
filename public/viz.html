@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoastBot Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { color: #212529; font-size: 2.5em; }
+        h2 { color: #495057; border-bottom: 2px solid #dee2e6; padding-bottom: 10px; margin-top: 20px; }
+        h4 { margin-top: 25px; margin-bottom: 10px; color: #6c757d; }
+        .storytelling-quote { font-size: 1.2em; color: #6c757d; margin-top: -10px; font-style: italic; }
+        .container { display: flex; gap: 30px; max-width: 1600px; margin: 0 auto; align-items: flex-start; }
+        .module { background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 25px; flex-basis: 50%; }
+        .call-to-action { background-color: #e9ecef; border-left: 5px solid #0d6efd; padding: 15px; margin-bottom: 20px; border-radius: 4px; font-size: 0.95em; }
+        .axis-selectors, .profile-selector { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+        label { font-weight: bold; }
+        select { padding: 8px; border: 1px solid #ced4da; border-radius: 4px; font-size: 1em; }
+        .interpretation-note { background-color: #f8f9fa; border: 1px dashed #ced4da; padding: 15px; margin-top: 20px; border-radius: 4px; font-style: italic; color: #495057;}
+        .mock-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .mock-buttons button { padding: 8px 15px; border: 1px dashed #6c757d; background-color: #f8f9fa; color: #6c757d; border-radius: 4px; cursor: pointer; }
+        #delightMoments { margin-top: 15px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RoastBot Dashboard</h1>
+        <p class="storytelling-quote">Visualizing how RoastBot learns humor from feedback</p>
+    </header>
+
+    <div class="container">
+        <div class="module">
+            <h2>✨ Module 1: The Joke Genome Lab</h2>
+            <div class="call-to-action">
+                The plot is interactive and visualizes mock humor clusters. Adjust the axes to explore how different traits separate humor types and see how cluster definitions shift.
+            </div>
+
+            <div class="axis-selectors">
+                <label for="xAxisSelect">X-Axis:</label>
+                <select id="xAxisSelect">
+                    <option value="edginess">Edginess</option>
+                    <option value="surprise_factor" selected>Surprise</option>
+                    <option value="aggression">Aggression</option>
+                    <option value="warmth">Warmth (mock)</option>
+                </select>
+                <label for="yAxisSelect">Y-Axis:</label>
+                <select id="yAxisSelect">
+                    <option value="surprise_factor">Surprise</option>
+                    <option value="edginess" selected>Edginess</option>
+                    <option value="aggression">Aggression</option>
+                    <option value="timing">Timing (mock)</option>
+                </select>
+            </div>
+            <canvas id="jokeScatterPlot"></canvas>
+            <div class="interpretation-note">
+                <p id="plotInterpretation">This view shows how different humor clusters relate based on the selected axes.</p>
+            </div>
+        </div>
+
+        <div class="module">
+            <h2>👤 Module 2: Your Humor Mirror</h2>
+             <div class="call-to-action">
+                The learning timeline updates as users interact. This view highlights how individual humor preferences evolve over time and how the system adapts to each user’s reactions.
+            </div>
+
+            <div class="profile-selector">
+                <label for="userSelector">Select a User Profile:</label>
+                <select id="userSelector"></select>
+            </div>
+
+            <div class="profile-snapshot">
+                <h3 id="profileTitle"></h3>
+                <p class="key-insight" id="keyInsight" style="font-size: 1.1em; font-style: italic; color: #0d6efd; margin-bottom: 15px;"></p>
+                <h4>Preferred "Flavor"</h4>
+                <canvas id="personaBarChart" height="150"></canvas>
+                <div id="delightMoments"></div>
+                <h4>📈 Humor Learning Timeline</h4>
+                <canvas id="learningTimelineChart" height="100"></canvas>
+            </div>
+            <div class="mock-buttons">
+                <button>+ Add Widget</button>
+                <button>🎨 Edit Layout</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+// --- DATA SETUP ---
+// Added a 'cluster' property to each roast for visualization
+const roastData = [
+  {"roast_id": "R001", "user_id": "U001", "persona": "Bitter Comic", "aggression": "Medium", "edginess": "High", "surprise_factor": "Medium", "warmth": "Low", "timing": "High", "cluster": "Dark Minimalists"},
+  {"roast_id": "R002", "user_id": "U001", "persona": "Divorced Aunt", "aggression": "Medium", "edginess": "High", "surprise_factor": "High", "warmth": "Medium", "timing": "High", "cluster": "Absurd Dreamers"},
+  {"roast_id": "R003", "user_id": "U001", "persona": "Polite Stranger", "aggression": "Low", "edginess": "Low", "surprise_factor": "Low", "warmth": "High", "timing": "Low", "cluster": "Wordplay Wits"},
+  {"roast_id": "R004", "user_id": "U001", "persona": "Bitter Comic", "aggression": "Medium", "edginess": "Medium", "surprise_factor": "Medium", "warmth": "Low", "timing": "Medium", "cluster": "Dark Minimalists"},
+  {"roast_id": "R005", "user_id": "U001", "persona": "Divorced Aunt", "aggression": "Medium", "edginess": "High", "surprise_factor": "High", "warmth": "Medium", "timing": "High", "cluster": "Absurd Dreamers"},
+  {"roast_id": "R006", "user_id": "U001", "persona": "Polite Stranger", "aggression": "Low", "edginess": "Low", "surprise_factor": "Low", "warmth": "High", "timing": "Low", "cluster": "Wordplay Wits"},
+  {"roast_id": "R007", "user_id": "U002", "persona": "Bitter Comic", "aggression": "Medium", "edginess": "Medium", "surprise_factor": "Medium", "warmth": "Medium", "timing": "Medium", "cluster": "Dark Minimalists"},
+  {"roast_id": "R008", "user_id": "U002", "persona": "Dementia Grand High", "aggression": "High", "edginess": "High", "surprise_factor": "High", "warmth": "Low", "timing": "Low", "cluster": "Absurd Dreamers"},
+  {"roast_id": "R009", "user_id": "U002", "persona": "Polite Stranger", "aggression": "Medium", "edginess": "Low", "surprise_factor": "Low", "warmth": "High", "timing": "Medium", "cluster": "Wordplay Wits"},
+  {"roast_id": "R010", "user_id": "U002", "persona": "Divorced Aunt", "aggression": "Medium", "edginess": "Medium", "surprise_factor": "Medium", "warmth": "High", "timing": "Medium", "cluster": "Absurd Dreamers"},
+  {"roast_id": "R011", "user_id": "U002", "persona": "Bitter Comic", "aggression": "High", "edginess": "Medium", "surprise_factor": "High", "warmth": "Low", "timing": "High", "cluster": "Dark Minimalists"},
+  {"roast_id": "R012", "user_id": "U002", "persona": "Polite Stranger", "aggression": "Low", "edginess": "Low", "surprise_factor": "Low", "warmth": "Medium", "timing": "Low", "cluster": "Wordplay Wits"},
+  {"roast_id": "R013", "user_id": "U002", "persona": "Divorced Aunt", "aggression": "Medium", "edginess": "High", "surprise_factor": "High", "warmth": "Medium", "timing": "High", "cluster": "Absurd Dreamers"},
+  {"roast_id": "R014", "user_id": "U002", "persona": "Bitter Comic", "aggression": "High", "edginess": "High", "surprise_factor": "High", "warmth": "Low", "timing": "Medium", "cluster": "Dark Minimalists"}
+];
+
+const levelMapping = { "Low": 1, "Medium": 2, "High": 3 };
+const fakeTimelineData = {
+    "U001": [2, 3, 3, 4, 6, 7, 8, 8, 9, 9], // Gradual learner
+    "U002": [5, 4, 6, 8, 7, 8, 9, 10, 9, 10] // Faster, more volatile learner
+};
+let personaBarChart, jokeScatterPlot, learningTimelineChart;
+
+document.addEventListener('DOMContentLoaded', () => {
+    populateUserSelector();
+    updateScatterPlot();
+
+    document.getElementById('xAxisSelect').addEventListener('change', updateScatterPlot);
+    document.getElementById('yAxisSelect').addEventListener('change', updateScatterPlot);
+    document.getElementById('userSelector').addEventListener('change', (e) => updateUserProfile(e.target.value));
+
+    updateUserProfile(document.getElementById('userSelector').value);
+});
+
+// --- Module 1 ---
+function updateScatterPlot() {
+    const xAxisKey = document.getElementById('xAxisSelect').value;
+    const yAxisKey = document.getElementById('yAxisSelect').value;
+    renderScatterPlot(roastData, xAxisKey, yAxisKey);
+    updatePlotInterpretation(xAxisKey, yAxisKey);
+}
+
+function renderScatterPlot(data, xAxisKey, yAxisKey) {
+    const ctx = document.getElementById('jokeScatterPlot').getContext('2d');
+    if (jokeScatterPlot) jokeScatterPlot.destroy();
+
+    const clusters = [...new Set(data.map(item => item.cluster))];
+    const clusterColors = {'Dark Minimalists': 'rgba(220, 53, 69, 0.7)', 'Absurd Dreamers': 'rgba(25, 135, 84, 0.7)', 'Wordplay Wits': 'rgba(13, 110, 253, 0.7)'};
+
+    const datasets = clusters.map(cluster => ({
+        label: cluster,
+        data: data.filter(item => item.cluster === cluster).map(item => ({
+            x: levelMapping[item[xAxisKey]] || 0,
+            y: levelMapping[item[yAxisKey]] || 0
+        })),
+        backgroundColor: clusterColors[cluster] || 'rgba(108, 117, 125, 0.7)'
+    }));
+
+    jokeScatterPlot = new Chart(ctx, {
+        type: 'scatter',
+        data: { datasets },
+        options: {
+            plugins: { title: { display: true, text: 'Humor Space' } },
+            scales: {
+                x: { title: { display: true, text: xAxisKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) }, min: 0.5, max: 3.5, ticks: { stepSize: 1, callback: v => Object.keys(levelMapping).find(k => levelMapping[k] === v) }},
+                y: { title: { display: true, text: yAxisKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) }, min: 0.5, max: 3.5, ticks: { stepSize: 1, callback: v => Object.keys(levelMapping).find(k => levelMapping[k] === v) }}
+            }
+        }
+    });
+}
+
+function updatePlotInterpretation(x, y) {
+    let text = `This view shows roasts clustered by ${x} and ${y}. `;
+    if (x === 'surprise_factor' && y === 'edginess') {
+        text += "Notice how 'Absurd Dreamers' group in the high surprise/high edginess quadrant.";
+    } else if (x === 'aggression' && y === 'timing') {
+        text += "Here, 'Dark Minimalists' favor high aggression, while 'Wordplay Wits' are more varied in timing.";
+    } else {
+        text += "Experiment with different axes to see how the cluster definitions change."
+    }
+    document.getElementById('plotInterpretation').textContent = text;
+}
+
+// --- Module 2 ---
+function populateUserSelector() {
+    const userSelector = document.getElementById('userSelector');
+    [...new Set(roastData.map(item => item.user_id))].forEach(userId => {
+        const option = document.createElement('option');
+        option.value = userId;
+        option.textContent = userId;
+        userSelector.appendChild(option);
+    });
+}
+
+function updateUserProfile(userId) {
+    const userData = roastData.filter(item => item.user_id === userId);
+    if (!userData.length) return;
+
+    document.getElementById('profileTitle').textContent = `Humor Profile for User ${userId}`;
+    const personaCounts = countByKey(userData, 'persona');
+    document.getElementById('keyInsight').textContent = `Based on your reactions, you enjoy roasts from a ${Object.keys(personaCounts).reduce((a, b) => personaCounts[a] > personaCounts[b] ? a : b, '')} persona.`;
+    
+    renderPersonaBarChart(personaCounts);
+    renderDelightMoments(personaCounts);
+    renderLearningTimeline(userId);
+}
+
+function renderPersonaBarChart(counts) {
+    const ctx = document.getElementById('personaBarChart').getContext('2d');
+    if (personaBarChart) personaBarChart.destroy();
+    personaBarChart = new Chart(ctx, { type: 'bar', data: { labels: Object.keys(counts), datasets: [{ data: Object.values(counts), backgroundColor: 'rgba(13, 110, 253, 0.6)' }] }, options: { indexAxis: 'y', scales: { x: { ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } } });
+}
+
+function renderLearningTimeline(userId) {
+    const ctx = document.getElementById('learningTimelineChart').getContext('2d');
+    if (learningTimelineChart) learningTimelineChart.destroy();
+    learningTimelineChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: Array.from({length: 10}, (_, i) => i + 1), datasets: [{ data: fakeTimelineData[userId], borderColor: 'rgb(75, 192, 192)', tension: 0.4 }] },
+        options: { plugins: { legend: { display: false }, title: { display: true, text: 'Adaptation Over Interactions (1-10)' }}, scales: { y: { beginAtZero: true, max: 10 } } }
+    });
+}
+
+function renderDelightMoments(counts) {
+    const topPersona = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b, '');
+    const delightMap = { 'Bitter Comic': '🔥 Your roasts hit with dry confidence.', 'Divorced Aunt': '💅 Serves chaotic, wine-aunt energy.', 'Polite Stranger': '😏 Prefers a subtle, polite takedown.' };
+    document.getElementById('delightMoments').innerHTML = `<p>${delightMap[topPersona] || '😂 Enjoys a classic roast.'}</p>`;
+}
+
+// --- Utility ---
+function countByKey(arr, key) {
+    return arr.reduce((acc, item) => { acc[item[key]] = (acc[item[key]] || 0) + 1; return acc; }, {});
+}
+</script>
+</body>
+</html>
