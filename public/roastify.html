@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roastify by Humor Genome</title>
+  <meta name="description" content="Roastify turns any photo into a quick, funny roast caption. Built on Cloud Run with Vertex AI Gemini, Firestore, BigQuery, and Firebase Hosting." />
+  <meta property="og:title" content="Roastify by Humor Genome" />
+  <meta property="og:description" content="Turn photos into quick, funny roast captions. Try it on Discord and see it run on Cloud Run." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/roastify_burger.png" />
+  <meta name="theme-color" content="#111827" />
+  <style>
+    :root { --bg:#0b0f17; --fg:#f8fafc; --muted:#a7b0be; --brand:#22c55e; --card:#111827; --accent:#60a5fa; }
+    html,body{margin:0;height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:var(--bg);color:var(--fg);}    
+    .container{max-width:1080px;margin:0 auto;padding:24px;}
+    header{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;padding:24px 0 8px;}
+    h1{font-size:clamp(28px,5vw,44px);margin:0;letter-spacing:0.2px;}
+    p.lead{font-size:clamp(16px,2.5vw,20px);color:var(--muted);margin:0 auto;max-width:900px;}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+    .btn{appearance:none;border:0;border-radius:12px;padding:12px 18px;font-weight:600;cursor:pointer}
+    .btn-primary{background:var(--brand);color:#052e16;}
+    .btn-secondary{background:#1f2937;color:#d1d5db;border:1px solid #374151}
+    .btn:hover{filter:brightness(1.05)}
+    .hero{margin-top:20px;background:linear-gradient(180deg,#0d1422 0%,#0b0f17 100%);border:1px solid #1f2937;border-radius:16px;overflow:hidden;text-align:center}
+    .hero img{width:50%;height:auto;display:inline-block}
+    .section{margin:40px 0}
+    .section h2{font-size:clamp(22px,3.5vw,30px);margin:0 0 12px}
+    .grid{display:grid;gap:20px}
+    @media (min-width:900px){ .grid-2{grid-template-columns:1.2fr 1fr} }
+    .card{background:var(--card);border:1px solid #1f2937;border-radius:16px;padding:18px}
+    .muted{color:var(--muted)}
+    .video-wrap{position:relative;width:100%;padding-bottom:56.25%;border-radius:16px;overflow:hidden;border:1px solid #1f2937;background:#000}
+    .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+    .list li{display:flex;gap:10px;align-items:flex-start}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:10px;flex:none}
+    .arch{border-radius:16px;border:1px solid #1f2937;overflow:hidden;background:#0d1422}
+    .arch img{display:block;width:100%;height:auto}
+    footer{margin:48px 0 16px;color:#94a3b8;font-size:14px;text-align:center}
+    a{color:#93c5fd}
+    .kbd{background:#111827;border:1px solid #1f2937;border-bottom-color:#0b0f17;border-radius:8px;padding:2px 6px;color:#e5e7eb;font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Roastify by Humor Genome</h1>
+      <p class="lead">Turn any photo into a quick, funny roast caption. Built on Cloud Run with Gemini, Firestore, and BigQuery.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://discord.gg/Srj56MA89d" target="_blank" rel="noopener noreferrer">Try it on Discord</a>
+        <a class="btn btn-secondary" href="#demo" aria-label="Jump to demo video">Watch 3 minute demo</a>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="Product highlight">
+      <img src="/roastify_burger.png" alt="Roastify product highlight screenshot showing a roast caption over a burger photo" loading="eager" />
+    </section>
+
+    <section class="section grid grid-2">
+      <div class="card">
+        <h2>What it does</h2>
+        <ul class="list">
+          <li><span class="dot"></span><span>Generates a single share ready roast caption that matches the photo mood.</span></li>
+          <li><span class="dot"></span><span>Lets you tune tone, heat, and style with simple choices.</span></li>
+          <li><span class="dot"></span><span>Captures emoji feedback so the system learns what lands.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>How to try it</h2>
+        <ul class="list">
+          <li><span class="dot"></span><span>Click <strong>Try it on Discord</strong> and join the server.</span></li>
+          <li><span class="dot"></span><span>Post a photo in the #roast-me channel, then react with <span class="kbd">👍</span> or <span class="kbd">👎</span>.</span></li>
+          <li><span class="dot"></span><span>Use <span class="kbd">/roast</span> to set tone, heat, and style.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="demo" class="section">
+      <h2>3 minute demo</h2>
+      <div class="video-wrap" role="group" aria-label="Roastify demo video">
+        <iframe loading="lazy" title="Roastify Demo Video" src="https://www.youtube.com/embed/fCKPo65Iw6E" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <section class="section grid grid-2">
+      <div class="card">
+        <h2>Why Cloud Run</h2>
+        <ul class="list">
+          <li><span class="dot"></span><span>Autoscaling keeps costs low while handling spikes.</span></li>
+          <li><span class="dot"></span><span>Stateless API works cleanly with Discord events and web hooks.</span></li>
+          <li><span class="dot"></span><span>Easy rollout for new prompt versions and safety rules.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Stack at a glance</h2>
+        <ul class="list">
+          <li><span class="dot"></span><span><strong>Cloud Run</strong> for the API and event loop</span></li>
+          <li><span class="dot"></span><span><strong>Vertex AI Gemini</strong> for caption generation</span></li>
+          <li><span class="dot"></span><span><strong>Firestore</strong> for feedback logging</span></li>
+          <li><span class="dot"></span><span><strong>BigQuery</strong> for analytics and taste modeling</span></li>
+          <li><span class="dot"></span><span><strong>Firebase Hosting</strong> for this page and admin tools</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Architecture</h2>
+      <figure class="arch">
+        <img src="/roastify_architecture.png" alt="Roastify system architecture diagram showing Cloud Run, Gemini, Firestore, BigQuery, and Firebase Hosting" loading="lazy" />
+      </figure>
+      <p class="muted" style="margin-top:10px">Looking for details or a quick walkthrough? Watch the demo video above, then try it live on Discord.</p>
+    </section>
+
+    <footer>
+      <div>Built for Google Cloud Run Hackathon 2025 • <a href="https://humorgenome.org" target="_blank" rel="noopener noreferrer">humorgenome.org</a></div>
+    </footer>
+  </div>
+</body>
+</html>
