@@ -49,6 +49,29 @@
     footer{margin:48px 0 16px;color:#94a3b8;font-size:14px;text-align:center}
     a{color:#93c5fd}
     .kbd{background:#111827;border:1px solid #1f2937;border-bottom-color:#0b0f17;border-radius:8px;padding:2px 6px;color:#e5e7eb;font-size:12px}
+    .discord-steps{margin-top:20px;border:1px solid #1f2937;border-radius:18px;background:linear-gradient(145deg,#0f1729,#0c111c);padding:0;max-width:720px;width:100%;box-shadow:0 25px 60px rgba(5,10,18,0.5);overflow:hidden}
+    .discord-steps summary{list-style:none;padding:18px 22px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .discord-steps summary::marker{display:none}
+    .discord-steps summary div{display:flex;flex-direction:column;text-align:left}
+    .discord-steps summary .summary-title{font-size:16px;font-weight:650;color:var(--fg);margin:0}
+    .discord-steps summary .summary-subtitle{font-size:13px;color:#a7b0be;margin:2px 0 0;font-weight:500}
+    .discord-steps summary .summary-icon{width:28px;height:28px;border-radius:50%;border:1px solid #243044;display:grid;place-items:center;transition:transform 0.25s ease,background 0.25s ease}
+    .discord-steps summary .summary-icon::before{content:'';display:block;width:8px;height:8px;border-right:2px solid #a7b0be;border-bottom:2px solid #a7b0be;transform:rotate(45deg);transition:inherit}
+    .discord-steps[open] summary .summary-icon{transform:rotate(180deg);background:#111b2d}
+    .discord-steps[open] summary{border-bottom:1px solid #1f2937}
+    .discord-steps ol{margin:0;padding:22px 26px 26px;list-style:none;display:grid;gap:12px}
+    .discord-steps li{display:grid;grid-template-columns:auto 1fr;gap:16px;color:var(--muted);font-size:15px}
+    .discord-steps li:not(:last-child){padding-bottom:12px;border-bottom:1px solid #121926}
+    .discord-steps .step-num{width:28px;height:28px;border-radius:9px;background:#111b2d;color:var(--accent);font-weight:650;display:grid;place-items:center;margin-top:4px}
+    .discord-steps .step-body{display:flex;flex-direction:column;gap:4px}
+    .discord-steps .step-title{color:var(--fg);font-weight:650;font-size:15px}
+    .discord-steps .step-detail{margin:0;color:#cbd5f5;font-size:14px;line-height:1.4}
+    @media (max-width:600px){
+      .discord-steps summary{flex-direction:column;align-items:flex-start}
+      .discord-steps summary .summary-icon{align-self:flex-end}
+      .discord-steps{border-radius:16px}
+      .discord-steps li{grid-template-columns:minmax(24px,auto) 1fr}
+    }
   </style>
 </head>
 <body>
@@ -60,6 +83,66 @@
         <a class="btn btn-primary" href="https://discord.gg/Srj56MA89d" target="_blank" rel="noopener noreferrer">Try it on Discord</a>
         <a class="btn btn-secondary" href="#demo" aria-label="Jump to demo video">Watch 3 minute demo</a>
       </div>
+      <details class="discord-steps" aria-label="Instructions for trying Roastify on Discord">
+        <summary>
+          <div>
+            <p class="summary-title">Quick Discord playbook</p>
+            <p class="summary-subtitle">Expand for a 60-second walkthrough</p>
+          </div>
+          <span class="summary-icon" aria-hidden="true"></span>
+        </summary>
+        <ol>
+          <li>
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <div class="step-title">Join Midtown Lab</div>
+              <p class="step-detail">Use the invite above to enter the Discord server.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <div class="step-title">Hop into #roast-me</div>
+              <p class="step-detail">That's where all the roast prompts live.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <div class="step-title">Run <span class="kbd">/roast</span></div>
+              <p class="step-detail">Pick the tone, heat, or edge values you want.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <div class="step-body">
+              <div class="step-title">Share your target</div>
+              <p class="step-detail">Upload a photo or type a short post to roast.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">5</span>
+            <div class="step-body">
+              <div class="step-title">Tap 🔁 for alternates</div>
+              <p class="step-detail">React with the repeat emoji for a fresh roast or copy it for sharing.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">6</span>
+            <div class="step-body">
+              <div class="step-title">Log feedback</div>
+              <p class="step-detail">Optional emoji reactions help the model keep score.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">7</span>
+            <div class="step-body">
+              <div class="step-title">Verify the receipts</div>
+              <p class="step-detail">Open the <a href="https://humorgenome.org/roast-log" target="_blank" rel="noopener noreferrer">feedback log page</a>.</p>
+            </div>
+          </li>
+        </ol>
+      </details>
     </header>
 
     <section class="hero" aria-label="Product highlight">
